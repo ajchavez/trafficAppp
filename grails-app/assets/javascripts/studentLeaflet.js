@@ -1,5 +1,5 @@
 var nodes = [];
-var links = null;
+var links = [];
 var start = null;
 var end = null;
 var currentIcon = null;
@@ -36,41 +36,35 @@ var redIcon = L.icon({
     shadowSize: [41, 41]
 });
 
-function saveNodes(arr){
-    var temp = arr.split("/");
-    for(let step = 0; step < temp.length - 1 ; step++) {
-        var coords = temp[step].split(",");
-        nodes.push([parseFloat(coords[0]), parseFloat(coords[1])]);
-    }
-}
 $(document).ready(function() {
+    //load Nodes
     $.ajax({
         url: "/node/queryNodes",//"${g.link (controller:'Node', action: 'queryNodes')}"
-        dataType: "text",
+        dataType: 'json',
         success: function (data) {
-            saveNodes(data);
-            loadNetwork();
+            console.log(JSON.stringify(data));
+            data.forEach(function(row){
+                nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
+            });
+            //load Links
+            $.ajax({
+                url: "/link/queryLinks",//"${g.link (controller:'Node', action: 'queryNodes')}"
+                dataType: 'json',
+                success: function (data) {
+                    console.log(JSON.stringify(data));
+                    data.forEach(function(row){
+                      links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
+                          row.cParam,row.uNodeID, row.dNodeID])
+                    });
+                    loadNetwork();
+                }
+            });
         }
     })
-    // $.ajax({
-    //     url:"/node/queryNodes",//"${g.link (controller:'Node', action: 'queryNodes')}"
-    //     dataType:"json",
-    //     success:function(data){
-    //         console.log(data[0]);
-    //         return data;
-    //     }
-    // })
 });
 
 function loadNetwork(){
-    links = [
-        [1,1,4,1,0.15,4,0,0,1,0,3],
-        [1,1,4,1,0.15,4,0,0,1,0,4],
-        [1,1,4,1,0.15,4,0,0,0,3,2],
-        [1,1,4,1,0.15,4,1,0,0,4,2],
-        [1,1,4,1,0.15,4,0,0,0,3,1],
-        [1,1,4,1,0.15,4,0,0,0,4,1]
-    ];
+    console.log(links);
     start = 0;
     currentIcon = 0
     end = 2;
@@ -102,7 +96,7 @@ function loadNetwork(){
         });
     }
     for (let step = 0; step < links.length; step++){
-        var path = [[nodes[links[step][9]][1],nodes[links[step][9]][0]], [nodes[links[step][10]][1],nodes[links[step][10]][0]]];
+        var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
         leafletLinks[step].bindTooltip("547", {permanent: true, direction:"center"}).openTooltip();
         if(links[step][3] == 1){
