@@ -98,7 +98,7 @@ class LinkController {
     }
 
     def queryLink(){
-        QueryService queryService
+        // QueryService queryService
         render queryService.queryLinks(1)
     }
 }
