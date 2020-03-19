@@ -1,5 +1,6 @@
 package trafficapp
 
+import grails.converters.JSON
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
@@ -17,7 +18,10 @@ class LinkController {
     def show(Long id) {
         respond linkService.get(id)
     }
-
+    def queryLinks(){
+        def link = Link.findAll()
+        render link as JSON
+    }
     def create() {
         respond new Link(params)
     }
@@ -97,8 +101,5 @@ class LinkController {
         }
     }
 
-    def queryLink(){
-        // QueryService queryService
-        render queryService.queryLinks(1)
-    }
+
 }
