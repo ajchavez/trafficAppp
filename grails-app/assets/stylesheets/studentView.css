@@ -1,0 +1,31 @@
+body{
+    margin: 0;
+    padding: 0;
+    background:	#505050;
+}
+#map {
+    height:85vh;
+}
+.buttonContainer{
+    height:15%;
+    width:100vw;
+}
+
+button{
+    float:left;
+    height:10vh;
+    border-radius:25px;
+    width:40%;
+    margin-left:calc(5% - 2px);
+    margin-right:calc(5% - 2px);
+    margin-top:calc(2.5vh - 2px);
+    margin-bottom:calc(2.5vh - 2px);
+    padding:0 0 0 0;
+    background-color:#C21807;
+    border-bottom-color:#404040;
+    border-right-color:#404040;
+    border-top-color:	#808080;
+    border-left-color:	#808080;
+    font-size: 50px;
+    font-weight:700;
+}
