@@ -1,5 +1,6 @@
 package trafficapp
 
+import grails.converters.JSON
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
@@ -20,15 +21,7 @@ class NodeController {
 
     def queryNodes(){
         def nodes = Node.findAll()
-        //render nodes
-
-
-//        def out = []
-//        nodes.each {out << [it.xCoord, it.yCoord]}
-//        render out
-
-        nodes.each {render it.xCoord+","+it.yCoord+"/"}
-
+        render nodes as JSON
     }
 
     def create() {
