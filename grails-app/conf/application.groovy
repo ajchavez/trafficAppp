@@ -19,10 +19,10 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/home/**',     access: ['permitAll']],
 
 	//for access to Link and Node tables
-	[pattern: '/LinkController/**',        access: ['permitAll']],
-	[pattern: '/NodeController/**',        access: ['permitAll']],
-	[pattern: '/Link/**',        access: ['permitAll']],
-	[pattern: '/Node/**',        access: ['permitAll']],
+	[pattern: '/**/LinkController/**',        access: ['permitAll']],
+	[pattern: '/**/NodeController/**',        access: ['permitAll']],
+	[pattern: '/**/Link/**',        access: ['permitAll']],
+	[pattern: '/**/Node/**',        access: ['permitAll']],
 
 	//for admin access to dbconsole
 	[pattern: '/**/dbconsole/**',   access: ['ROLE_ADMIN']],

@@ -26,7 +26,7 @@ repositories {
 }
 
 //Tomcat server version
-ext['tomcat.version'] = '7.0.69'
+ext['tomcat.version'] = '7.0.76'
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
