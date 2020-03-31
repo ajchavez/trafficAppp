@@ -15,14 +15,23 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/css/**',      access: ['permitAll']],
 	[pattern: '/**/images/**',   access: ['permitAll']],
 	[pattern: '/**/favicon.ico', access: ['permitAll']],
-	[pattern: '/**/node/**',     access: ['permitAll']],
 	[pattern: '/**/home/**',     access: ['permitAll']],
 
+
 	//for access to Link and Node tables
-	[pattern: '/**/LinkController/**',        access: ['permitAll']],
-	[pattern: '/**/NodeController/**',        access: ['permitAll']],
-	[pattern: '/**/Link/**',        access: ['permitAll']],
-	[pattern: '/**/Node/**',        access: ['permitAll']],
+	[pattern: '/**/LinkController/**',        		access: ['permitAll']],
+	[pattern: '/**/NodeController/**',       		access: ['permitAll']],
+	[pattern: '/**/Link/**',        				access: ['permitAll']],
+	[pattern: '/**/Node/**',        				access: ['permitAll']],
+
+
+	// for production access to tables
+	//[pattern: '/**/trafficapp/Link/**',        		 access: ['permitAll']],
+	//[pattern: '/**/trafficapp/Node/**',        		 access: ['permitAll']],
+	//[pattern: '/**/trafficapp/LinkController/**',      access: ['permitAll']],
+	//[pattern: '/**/trafficapp/NodeController/**',      access: ['permitAll']],
+
+
 
 	//for admin access to dbconsole
 	[pattern: '/**/dbconsole/**',   access: ['ROLE_ADMIN']],
