@@ -5,9 +5,8 @@
 </head>
 
 <body>
-<h1>POSTGAME SCREEN</h1>
-<br>
-<p>before alg</p>
-<p>${it.alg}</p>
+    <h1>POSTGAME SCREEN</h1>
+    <p>before alg</p>
+    <p>${alg}</p>
 </body>
 </html>

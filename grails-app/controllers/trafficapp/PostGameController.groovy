@@ -4,7 +4,10 @@ class PostGameController {
 
     def index() {
         def alg = GameSettings.first().getAlgorithm()
-        render alg
+        render view: "index", model: [alg: alg]
+        //render view: "index", model: [nodeList: nodeList]
+
+
 
     }
 }
