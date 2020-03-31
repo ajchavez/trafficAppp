@@ -91,7 +91,8 @@
 <div id="buttonContainer">
     <button>Refresh</button>
     <g:link action="endGame">
-        <input type="button" value="End Game" class="button"/>
+        <button>End Game</button>
+        %{-- <input type="button" value="End Game" class="button"/> --}%
     </g:link>
 </div>
 

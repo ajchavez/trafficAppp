@@ -7,7 +7,7 @@ class ProfessorController {
     }
 
     def endGame() {
-        // code to force game end on all student screens
+        // need code to force game end on all student screens
         redirect url: '/postGame'
     }
 }

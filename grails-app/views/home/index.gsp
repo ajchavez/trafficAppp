@@ -11,12 +11,28 @@
 <div class="home-container">
     <div class="home-header">Traffic Jam</div>
 
+    %{-- Old button not linked to game settings view
     <div style="text-align:center;">
         <button type="button" class="btn btn-primary professor-button">Professor</button>
     </div>
+    --}%
 
+    <div style="...">
+        <g:link controller="gameSettings" action="index">
+            <button type="button" class="btn btn-primary professor-button">Professor</button>
+        </g:link>
+    </div>
+
+    %{-- Old button not linked to student view
     <div style="text-align:center;">
         <button type="button" class="btn btn-primary student-button">Student</button>
+    </div>
+    --}%
+
+    <div style="...">
+        <g:link controller="student" action="index">
+            <button type="button" class="btn btn-primary student-button">Student</button>
+        </g:link>
     </div>
 
     <!-- Button trigger modal -->
