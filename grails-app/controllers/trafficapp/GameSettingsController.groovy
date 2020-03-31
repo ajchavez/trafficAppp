@@ -12,14 +12,15 @@ class GameSettingsController {
     def index(Integer max) {
         //params.max = Math.min(max ?: 10, 100)
         //respond gameSettingsService.list(params), model:[gameSettingsCount: gameSettingsService.count()]
-        def nodes = Node.listOrderById()
 
+        /* Unused because random node assignment
+        def nodes = Node.listOrderById()
         def nodeList = []
         for (int i = 0; i < nodes.size; i++) {
             nodeList << nodes[i].id
         }
         render view: "index", model: [nodeList: nodeList]
-
+        */
     }
 
     def show(Long id) {
@@ -35,7 +36,7 @@ class GameSettingsController {
         gs.save()
 
         // Change this line to redirect gameSetting/index.gsp form submit to the professor's view when clicked
-        redirect url: '/'
+        redirect url: '/professor'
         /*
         if (gameSettings == null) {
             notFound()

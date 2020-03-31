@@ -39,16 +39,21 @@
     %{-- Change form input items corresponding to domain changes --}%
     <label for="maxIterations">Max Iterations</label>
     <input type="number" step="1" id="maxIterations" name="maxIterations" placeholder="e.g. 3">
-    <label for="startNodeID">Start Node</label>
-    <g:select name="startNodeID" from="${nodeList}" noSelection="['':'-Select A Node-']" id="startNodeID"></g:select>
-    <label for="endNodeID">end Node</label>
-    <g:select name="endNodeID" from="${nodeList}" noSelection="['':'-Select A Node-']" id="endNodeID"></g:select>
+    <label for="algorithm">Algorithm</label>
+    <g:select name="algorithm" from="${['BPR', 'Polynomial']}" noSelection="['':'-Select An Algorithm-']" id="algorithm"></g:select>
     %{-- Change form input items corresponding to domain changes --}%
 
     <g:actionSubmit value="Submit" action="save"></g:actionSubmit>
 </g:form>
 </body>
 </html>
+
+%{-- unused
+    <label for="startNodeID">Start Node</label>
+    <g:select name="startNodeID" from="${nodeList}" noSelection="['':'-Select A Node-']" id="startNodeID"></g:select>
+    <label for="endNodeID">end Node</label>
+    <g:select name="endNodeID" from="${nodeList}" noSelection="['':'-Select A Node-']" id="endNodeID"></g:select>
+--}%
 
 %{--
 <!DOCTYPE html>
