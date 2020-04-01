@@ -46,7 +46,8 @@ class StudentTurnController {
     }
 
     def getLastTurn(){
-        render StudentTurn.findAllByStudentID("ajchavez").last() as JSON
+        def user = JSON.parse(params.value)
+        render StudentTurn.findAllByStudentID(user.user).last() as JSON
     }
 
     /*def updateCarsOnLink(int [] removeCar, int [] addCar){
