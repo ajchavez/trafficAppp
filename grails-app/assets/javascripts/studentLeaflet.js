@@ -84,8 +84,9 @@ function previousTurn(){
     //loadPreviousTurn
     $.ajax({
         url: "/StudentTurn/getLastTurn",
-        type:'GET',
+        type:'Post',
         dataType: 'json',
+        data: "value="+JSON.stringify({user: localStorage.getItem("username")}),
         success: function (data) {
             lastNode = data.lastNodePath
             lastLink = data.lastLinkPath
