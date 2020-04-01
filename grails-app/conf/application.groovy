@@ -7,8 +7,8 @@ grails.plugin.springsecurity.authority.className = 'trafficapp.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               access: ['permitAll']],
 	[pattern: '/error',          access: ['permitAll']],
-	[pattern: '/index',          access: ['permitAll']],
-	[pattern: '/index.gsp',      access: ['permitAll']],
+	[pattern: '/**/index/**',       access: ['permitAll']],
+	[pattern: '/**/index.gsp/**',   access: ['permitAll']],
 	[pattern: '/shutdown',       access: ['permitAll']],
 	[pattern: '/assets/**',      access: ['permitAll']],
 	[pattern: '/**/js/**',       access: ['permitAll']],
@@ -19,10 +19,21 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 
 
 	//for access to Link and Node tables
+	[pattern: '/**/GameSettingsController/**',      access: ['permitAll']],
+	[pattern: '/**/HomeController/**',       		access: ['permitAll']],
 	[pattern: '/**/LinkController/**',        		access: ['permitAll']],
 	[pattern: '/**/NodeController/**',       		access: ['permitAll']],
+	[pattern: '/**/PostGameController/**',        	access: ['permitAll']],
+	[pattern: '/**/ProfessorController/**',        	access: ['permitAll']],
+	[pattern: '/**/StudentController/**',       	access: ['permitAll']],
+	[pattern: '/**/StudentJoinController/**',       access: ['permitAll']],
+	[pattern: '/**/StudentTurnController/**',       access: ['permitAll']],
+
+	//for access to domains
+	[pattern: '/**/GameSettings/**',        		access: ['permitAll']],
 	[pattern: '/**/Link/**',        				access: ['permitAll']],
 	[pattern: '/**/Node/**',        				access: ['permitAll']],
+	[pattern: '/**/StudentTurn/**',        				access: ['permitAll']],
 
 
 
