@@ -29,23 +29,46 @@
 --}%
 
 <!DOCTYPE html>
+<html>
 <head>
-
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'game-settings.css')}">
+    <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'bootstrap.css')}">
+    <asset:javascript src="application.js"/>
+    <title>Game Settings</title>
 </head>
-<body>
-<h1>Game Settings</h1>
-<g:form controller="gameSettings" action="save" >
+
+<div class="main-container">
+
+    <g:form controller="gameSettings" action="save">
+        <div class="main-header">
+            Game Settings
+        </div>
+    %{-- Change form input items corresponding to domain changes --}%
+        <div class="wrapper">
+            <div class="box a"><label for="maxIterations">Max Iterations</label></div>
+
+            <div class="box b"><input type="number" step="1" id="maxIterations" name="maxIterations"
+                                      placeholder="e.g. 3"></div>
+
+
+            <div class="box c"><label for="algorithm">Algorithm</label></div>
+
+            <div class="box d"><g:select name="algorithm" from="${['BPR', 'Polynomial']}"
+                                         noSelection="['': '-Select An Algorithm-']"
+                                         id="algorithm"/></div>
+
+            <div class="box e"><label for="gameCode">Game Code</label></div>
+
+            <div class="box f"><g:textField name="gameCode" value="${myValue}"/></div>
+        </div>
 
     %{-- Change form input items corresponding to domain changes --}%
-    <label for="maxIterations">Max Iterations</label>
-    <input type="number" step="1" id="maxIterations" name="maxIterations" placeholder="e.g. 3">
-    <label for="algorithm">Algorithm</label>
-    <g:select name="algorithm" from="${['BPR', 'Polynomial']}" noSelection="['':'-Select An Algorithm-']" id="algorithm"></g:select>
-    %{-- Change form input items corresponding to domain changes --}%
+        <div style="text-align: center">
+            <g:actionSubmit class="btn btn-primary submit-button" value="Start Game" action="save"/>
+        </div>
 
-    <g:actionSubmit value="Submit" action="save"></g:actionSubmit>
-</g:form>
-</body>
+    </g:form>
+
 </html>
 
 %{-- unused

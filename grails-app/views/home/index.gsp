@@ -11,32 +11,21 @@
 <div class="home-container">
     <div class="home-header">Traffic Jam</div>
 
-    %{-- Old button not linked to game settings view
-    <div style="text-align:center;">
-        <button type="button" class="btn btn-primary professor-button">Professor</button>
-    </div>
-    --}%
 
-    <div style="...">
+    <div>
         <g:link controller="gameSettings" action="index">
             <button type="button" class="btn btn-primary professor-button">Professor</button>
         </g:link>
     </div>
 
-    %{-- Old button not linked to student view
-    <div style="text-align:center;">
-        <button type="button" class="btn btn-primary student-button">Student</button>
-    </div>
-    --}%
-
-    <div style="...">
+    <div>
         <g:link controller="student" action="index">
             <button type="button" class="btn btn-primary student-button">Student</button>
         </g:link>
     </div>
 
     <!-- Button trigger modal -->
-    <div style="text-align:center;">
+    <div>
         <button type="button" class="btn btn-primary help-button" data-toggle="modal" data-target="#exampleModalCenter">
             How to use the app
         </button>
@@ -65,6 +54,5 @@
             </div>
         </div>
     </div>
-
 </div>
 </html>
