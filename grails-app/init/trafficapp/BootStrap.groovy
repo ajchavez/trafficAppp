@@ -17,7 +17,6 @@ class BootStrap {
         new Link(linkID: 5, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 4, dNodeID: 2, carsOnLink: 0).save()
         new Link(linkID: 6, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 5, dNodeID: 2, carsOnLink: 0).save()
 
-        new StudentTurn(studentID: "ajchavez", iteration: 0, startNode: 0, endNode: 2, lastNodePath: null, lastLinkPath: null).save()
     }
     def destroy = {
     }

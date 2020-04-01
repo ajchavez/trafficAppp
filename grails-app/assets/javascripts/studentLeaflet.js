@@ -152,7 +152,7 @@ function endTurn(){
         url: "/StudentTurn/addTurn",
         type:'POST',
         dataType: 'json',
-        data: "value="+JSON.stringify({user: "ajchavez", pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
+        data: "value="+JSON.stringify({user: localStorage.getItem("username"), pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
     });
 }
 
