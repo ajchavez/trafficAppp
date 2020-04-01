@@ -19,7 +19,7 @@
     </div>
 
     <div>
-        <g:link controller="student" action="index">
+        <g:link controller="studentJoin" action="index">
             <button type="button" class="btn btn-primary student-button">Student</button>
         </g:link>
     </div>
