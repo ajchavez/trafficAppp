@@ -18,6 +18,10 @@ class StudentTurnController {
         respond studentTurnService.get(id)
     }
 
+    def getAlgorithm(){
+        render GameSettings.last() as JSON
+    }
+
     def addTurn(){
         //add turn to database
         def turn = JSON.parse(params.value)

@@ -16,7 +16,6 @@
 <div id="buttonContainer">
     <button onclick="refreshPage()">Refresh</button>
     <button onclick="endTurn()">End Turn</button>
-    <g:link controller="Node" action="queryNodes">this link</g:link>
 </div>
 
 
