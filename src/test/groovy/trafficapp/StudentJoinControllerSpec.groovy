@@ -1,10 +1,9 @@
-/*
 package trafficapp
 
-import grails.testing.services.ServiceUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class QueryServiceSpec extends Specification implements ServiceUnitTest<QueryService>{
+class StudentJoinControllerSpec extends Specification implements ControllerUnitTest<StudentJoinController> {
 
     def setup() {
     }
@@ -17,4 +16,3 @@ class QueryServiceSpec extends Specification implements ServiceUnitTest<QuerySer
             true == false
     }
 }
-*/

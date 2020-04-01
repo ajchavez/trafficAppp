@@ -1,10 +1,9 @@
-/*
 package trafficapp
 
-import grails.testing.services.ServiceUnitTest
+import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class QueryServiceSpec extends Specification implements ServiceUnitTest<QueryService>{
+class StudentTurnSpec extends Specification implements DomainUnitTest<StudentTurn> {
 
     def setup() {
     }
@@ -17,4 +16,3 @@ class QueryServiceSpec extends Specification implements ServiceUnitTest<QuerySer
             true == false
     }
 }
-*/

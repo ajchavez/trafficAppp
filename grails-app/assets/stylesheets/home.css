@@ -1,0 +1,40 @@
+.home-container {
+    font-family: Arial, sans-serif;
+    width:50%;
+    height: 90%;
+    padding-top: 2%;
+    margin:auto;
+    margin-top: 3%;
+    background: #d9d9d9;
+    align-content: center;
+    text-align: center;
+}
+
+.home-header {
+    font-family: Arial, sans-serif;
+    font-size: 68px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.professor-button {
+    font-size: 48px !important;
+    width: 500px;
+    height: 100px;
+    margin-top: 5%;
+}
+
+.student-button {
+    font-size: 48px !important;
+    width: 500px;
+    height: 100px;
+    margin-top: 10%;
+}
+
+.help-button {
+    font-size: 48px !important;
+    width: 500px;
+    height: 100px;
+    margin-top: 10%;
+}
