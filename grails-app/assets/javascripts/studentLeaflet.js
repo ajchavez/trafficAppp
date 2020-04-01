@@ -7,7 +7,8 @@ var leafletLinks = [];
 var leafletNodes = [];
 var orderNodesPicked = [];
 var orderLinksPicked = [];
-
+var lastNode= [];
+var lastLink= [];
 var blackIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
     iconSize: [25, 41],
@@ -39,19 +40,17 @@ var redIcon = L.icon({
 $(document).ready(function() {
     //load Nodes
     $.ajax({
-        url: "/node/queryNodes",//"${g.link (controller:'Node', action: 'queryNodes')}"
+        url: "/node/queryNodes",
         dataType: 'json',
         success: function (data) {
-            console.log(JSON.stringify(data));
             data.forEach(function(row){
                 nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
             });
             //load Links
             $.ajax({
-                url: "/link/queryLinks",//"${g.link (controller:'Node', action: 'queryNodes')}"
+                url: "/link/queryLinks",
                 dataType: 'json',
                 success: function (data) {
-                    console.log(JSON.stringify(data));
                     data.forEach(function(row){
                       links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
                           row.cParam,row.uNodeID, row.dNodeID])
@@ -64,12 +63,11 @@ $(document).ready(function() {
 });
 
 function loadNetwork(){
-    console.log(links);
     start = 0;
     currentIcon = 0
     end = 2;
     orderNodesPicked.push(start);
-    orderLinksPicked.push(-1);
+
     //set up view of centered on houghton, using street map
     var startLatLng = L.latLng(47.117432,-88.558785)
     var mymap = L.map('map').setView(startLatLng, 14);
@@ -78,7 +76,6 @@ function loadNetwork(){
         minZoom: 13,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
-
 
     for (let step = 0; step < nodes.length; step++) {
         var marker = null;
@@ -95,10 +92,19 @@ function loadNetwork(){
             selectRoute(step);
         });
     }
+
+    previousTurn()
     for (let step = 0; step < links.length; step++){
         var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
-        leafletLinks[step].bindTooltip("547", {permanent: true, direction:"center"}).openTooltip();
+        let weight = 0;
+        let numberOfCars = 1; //need to get from database!
+        if(1)
+            weight = BPR(links[step][3], numberOfCars, links[step][2], links[step][4], links[step][5]);
+        else{
+            weight = PCF(links[step][6], links[step][7], links[step][8], numberOfCars);
+        }
+        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
         if(links[step][3] == 1){
             L.polylineDecorator(leafletLinks[step],{
                 patterns: [
@@ -110,7 +116,31 @@ function loadNetwork(){
     }
 }
 
+function previousTurn(){
+    $.ajax({
+        url: "/StudentTurn/getLastTurn",
+        type:'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data.lastNodePath)
+            lastNode = data.lastNodePath
+            lastLink = data.lastLinkPath
+        }
+    });
+}
+//send choices to update choices and update congestion
+function endTurn(){
+    $.ajax({
+        url: "/StudentTurn/addTurn",
+        type:'POST',
+        dataType: 'json',
+        data: "value="+JSON.stringify({user: "ajchavez", pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
+    });
+}
 
+function refreshPage(){
+    window.location.reload();
+}
 
 function selectRoute(icon){
     if(orderNodesPicked.includes(icon)){
@@ -132,13 +162,13 @@ function selectRoute(icon){
                 }
             }
         }
-        orderLinksPicked = orderLinksPicked.slice(0,cutoff+1);
+        orderLinksPicked = orderLinksPicked.slice(0,cutoff);
         orderNodesPicked = orderNodesPicked.slice(0,cutoff+1);
         currentIcon = icon;
     }
     else{
         for (let step = 0; step < links.length; step++){
-            if(links[step][9] == currentIcon && links[step][10] == icon){
+            if(links[step][9]-1 == currentIcon && links[step][10]-1 == icon){
 
                 leafletLinks[step].setStyle({
                     color:'green'
@@ -152,6 +182,7 @@ function selectRoute(icon){
             }
         }
     }
+    console.log(orderLinksPicked)
 }
 
 //xa number of cars on the path

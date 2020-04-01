@@ -10,24 +10,14 @@ class BootStrap {
         new Node(nodeID: 5, xCoord: -88.553624, yCoord: 47.116936).save()
 
 
-        new Link(linkID: 1, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 0, B: 0, C: 1, uNodeID: 1, dNodeID: 4).save()
-        new Link(linkID: 2, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 0, B: 0, C: 1, uNodeID: 1, dNodeID: 5).save()
-        new Link(linkID: 3, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 0, B: 0, C: 0, uNodeID: 4, dNodeID: 3).save()
-        new Link(linkID: 4, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 1, B: 0, C: 0, uNodeID: 5, dNodeID: 3).save()
-        new Link(linkID: 5, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 0, B: 0, C: 0, uNodeID: 4, dNodeID: 2).save()
-        new Link(linkID: 6, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, A: 0, B: 0, C: 0, uNodeID: 5, dNodeID: 2).save()
+        new Link(linkID: 1, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 4, carsOnLink: 0).save()
+        new Link(linkID: 2, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 5, carsOnLink: 0).save()
+        new Link(linkID: 3, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 4, dNodeID: 3, carsOnLink: 0).save()
+        new Link(linkID: 4, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 1, bParam: 0, cParam: 0, uNodeID: 5, dNodeID: 3, carsOnLink: 0).save()
+        new Link(linkID: 5, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 4, dNodeID: 2, carsOnLink: 0).save()
+        new Link(linkID: 6, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 5, dNodeID: 2, carsOnLink: 0).save()
 
-        /*
-        new Author(name:"Stephen King")
-                .addToBooks(new Book(title:"The Stand", publishYear:1978))
-                .addToBooks(new Book(title:"The Shining", publishYear:1977))
-                .save()
-
-        new Author(name:"Mark Twain")
-                .addToBooks(new Book(title:"Tom Sawyer", publishYear:1876))
-                .addToBooks(new Book(title:"Huckelberry Finn", publishYear:1884))
-                .save()
-        */
+        new StudentTurn(studentID: "ajchavez", iteration: 0, startNode: 0, endNode: 2, lastNodePath: null, lastLinkPath: null).save()
     }
     def destroy = {
     }
