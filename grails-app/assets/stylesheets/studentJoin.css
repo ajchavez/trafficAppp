@@ -39,3 +39,7 @@ button{
     font-size: 30px;
     font-weight:700;
 }
+
+#dummy {
+    display: none;
+}
