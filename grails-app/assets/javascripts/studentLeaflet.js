@@ -7,7 +7,9 @@ var leafletLinks = [];
 var leafletNodes = [];
 var orderNodesPicked = [];
 var orderLinksPicked = [];
-
+var lastNode= [];
+var lastLink= [];
+var algorithm = "d"
 var blackIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
     iconSize: [25, 41],
@@ -39,37 +41,65 @@ var redIcon = L.icon({
 $(document).ready(function() {
     //load Nodes
     $.ajax({
-        url: "/node/queryNodes",//"${g.link (controller:'Node', action: 'queryNodes')}"
+        url: "/node/queryNodes",
         dataType: 'json',
         success: function (data) {
-            console.log(JSON.stringify(data));
             data.forEach(function(row){
                 nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
             });
-            //load Links
-            $.ajax({
-                url: "/link/queryLinks",//"${g.link (controller:'Node', action: 'queryNodes')}"
-                dataType: 'json',
-                success: function (data) {
-                    console.log(JSON.stringify(data));
-                    data.forEach(function(row){
-                      links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
-                          row.cParam,row.uNodeID, row.dNodeID])
-                    });
-                    loadNetwork();
-                }
-            });
+            getLinks()
         }
     })
 });
+function getLinks(){
+    //load Links
+    $.ajax({
+        url: "/link/queryLinks",
+        dataType: 'json',
+        success: function (data) {
+            data.forEach(function(row){
+                links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
+                    row.cParam,row.uNodeID, row.dNodeID, row.carsOnLink])
+            });
+
+            getAlgorithm()
+        }
+    });
+}
+function getAlgorithm(){
+    //loadAlgorithm
+    $.ajax({
+        url: "/StudentTurn/getAlgorithm",
+        type:'GET',
+        dataType: 'json',
+        success: function (data) {
+            algorithm = data.algorithm
+            console.log(data.algorithm)
+            previousTurn()
+        }
+    });
+
+}
+function previousTurn(){
+    //loadPreviousTurn
+    $.ajax({
+        url: "/StudentTurn/getLastTurn",
+        type:'GET',
+        dataType: 'json',
+        success: function (data) {
+            lastNode = data.lastNodePath
+            lastLink = data.lastLinkPath
+            loadNetwork()
+        }
+    });
+}
 
 function loadNetwork(){
-    console.log(links);
     start = 0;
     currentIcon = 0
     end = 2;
     orderNodesPicked.push(start);
-    orderLinksPicked.push(-1);
+
     //set up view of centered on houghton, using street map
     var startLatLng = L.latLng(47.117432,-88.558785)
     var mymap = L.map('map').setView(startLatLng, 14);
@@ -78,7 +108,6 @@ function loadNetwork(){
         minZoom: 13,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
-
 
     for (let step = 0; step < nodes.length; step++) {
         var marker = null;
@@ -95,10 +124,17 @@ function loadNetwork(){
             selectRoute(step);
         });
     }
+
     for (let step = 0; step < links.length; step++){
         var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
-        leafletLinks[step].bindTooltip("547", {permanent: true, direction:"center"}).openTooltip();
+        let weight = 0;
+        if(algorithm == "BPR")
+            weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
+        else{
+            weight = PCF(links[step][6], links[step][7], links[step][8], links[step][11]);
+        }
+        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
         if(links[step][3] == 1){
             L.polylineDecorator(leafletLinks[step],{
                 patterns: [
@@ -110,7 +146,19 @@ function loadNetwork(){
     }
 }
 
+//send choices to update choices and update congestion
+function endTurn(){
+    $.ajax({
+        url: "/StudentTurn/addTurn",
+        type:'POST',
+        dataType: 'json',
+        data: "value="+JSON.stringify({user: localStorage.getItem("username"), pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
+    });
+}
 
+function refreshPage(){
+    window.location.reload();
+}
 
 function selectRoute(icon){
     if(orderNodesPicked.includes(icon)){
@@ -132,13 +180,13 @@ function selectRoute(icon){
                 }
             }
         }
-        orderLinksPicked = orderLinksPicked.slice(0,cutoff+1);
+        orderLinksPicked = orderLinksPicked.slice(0,cutoff);
         orderNodesPicked = orderNodesPicked.slice(0,cutoff+1);
         currentIcon = icon;
     }
     else{
         for (let step = 0; step < links.length; step++){
-            if(links[step][9] == currentIcon && links[step][10] == icon){
+            if(links[step][9]-1 == currentIcon && links[step][10]-1 == icon){
 
                 leafletLinks[step].setStyle({
                     color:'green'
@@ -163,74 +211,3 @@ function BPR(ta, xa, ca, alpha, beta){
 function PCF(A, B, C, xa){
     return C * Math.pow(xa, 2) + (B * xa) + A;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-//add a line to the map
-var path = [[47.12583382979998,-88.5745668411255],[47.12186989169294,-88.57360124588014]];
-var road = L.polyline(path, {color: 'blue',weight:10}).addTo(mymap);
-var path2 = [[47.12186989169294,-88.57360124588014] , [47.12180418857298,-88.56280803680421]];
-var road2 = L.polyline(path2, {color: 'blue',weight:10}).addTo(mymap);
-
-//change color on hover
-road.on('mouseover', function(){
-this.setStyle({
-    color:'red'
-});
-});
-road2.on('mouseover', function(){
-    this.setStyle({
-        color:'red'
-    });
-});
-
-//When a line is clicked notify which road
-road.on('click',function() {
-alert("road 1 chosen");
-});
-road2.on('click',function() {
-    alert("road 2 chosen");
-});
-
-
-//change color back after hover
-road.on('mouseout', function() {
-this.setStyle({color:'blue'})
-});
-road2.on('mouseout', function() {
-this.setStyle({color:'blue'})
-});
-
-//add a marker
-L.marker(L.latLng(47.12583382979998,-88.5745668411255)).addTo(mymap);
-L.marker(L.latLng(47.12180418857298,-88.56280803680421)).addTo(mymap);
-
-//right click on map to get notification with lat long
-mymap.on('contextmenu', function(e) {
-alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-});*/
-
-

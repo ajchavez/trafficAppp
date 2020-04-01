@@ -14,6 +14,7 @@ class Link {
     double cParam
     int uNodeID
     int dNodeID
+    int carsOnLink
     // Add network id field
 
     static constraints = {
@@ -29,5 +30,6 @@ class Link {
         cParam blank: false, nullable: false
         uNodeID blank: false, nullable: false
         dNodeID blank: false, nullable: false
+        carsOnLink blank : false, nullable : false
     }
 }
