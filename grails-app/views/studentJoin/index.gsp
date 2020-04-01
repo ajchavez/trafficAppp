@@ -20,8 +20,9 @@
     <div class = input><input id = "gameID", type="text"></div>
     <div class = label><h6>NAME</h6></div>
     <div class = input><input id = "username", type="text"></div>
+    <button onclick="joinGame()">JOIN GAME</button>
     <g:link controller="student" action="index">
-        <button onclick="joinGame()">JOIN GAME</button>
+        <button id = "dummy"></button>
     </g:link>
 </div>
 </body>
