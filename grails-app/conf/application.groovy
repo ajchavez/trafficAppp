@@ -25,13 +25,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/Node/**',        				access: ['permitAll']],
 
 
-	// for production access to tables
-	//[pattern: '/**/trafficapp/Link/**',        		 access: ['permitAll']],
-	//[pattern: '/**/trafficapp/Node/**',        		 access: ['permitAll']],
-	//[pattern: '/**/trafficapp/LinkController/**',      access: ['permitAll']],
-	//[pattern: '/**/trafficapp/NodeController/**',      access: ['permitAll']],
-
-
 
 	//for admin access to dbconsole
 	[pattern: '/**/dbconsole/**',   access: ['ROLE_ADMIN']],
