@@ -45,7 +45,7 @@ $(document).ready(function() {
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
-                nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
+                nodes.push(row)
             });
             getLinks()
         }
@@ -58,14 +58,14 @@ function getLinks(){
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
-                links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
-                    row.cParam,row.uNodeID, row.dNodeID, row.carsOnLink])
+                links.push(row)
             });
 
             getAlgorithm()
         }
     });
 }
+
 function getAlgorithm(){
     //loadAlgorithm
     $.ajax({
@@ -113,13 +113,13 @@ function loadNetwork(){
     for (let step = 0; step < nodes.length; step++) {
         var marker = null;
         if(step == start){
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:greenIcon}).addTo(mymap));
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:greenIcon}).addTo(mymap));
         }
         else if(step == end){
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:redIcon}).addTo(mymap));
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:redIcon}).addTo(mymap));
         }
         else{
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:blackIcon}).addTo(mymap));
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:blackIcon}).addTo(mymap));
         }
         leafletNodes[step].on('click',function(){
             selectRoute(step);
@@ -127,23 +127,22 @@ function loadNetwork(){
     }
 
     for (let step = 0; step < links.length; step++){
-        var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
+        var path = [[nodes[links[step].uNodeID - 1].yCoord, nodes[links[step].uNodeID - 1].xCoord], [nodes[links[step].dNodeID - 1].yCoord,nodes[links[step].dNodeID - 1].xCoord]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
         let weight = 0;
         if(algorithm == "BPR")
-            weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
+            weight = BPR(links[step].freeFlowTravelTime, links[step].carsOnLink, links[step].capacity, links[step].alpha, links[step].beta);
         else{
-            weight = PCF(links[step][6], links[step][7], links[step][8], links[step][11]);
+            weight = PCF(links[step].aParam, links[step].bParam, links[step].cParam, links[step].carsOnLink);
         }
         leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
-        if(links[step][3] == 1){
-            L.polylineDecorator(leafletLinks[step],{
-                patterns: [
-                    // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-                    {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
-                ]
-            }).addTo(mymap);
-        }
+        L.polylineDecorator(leafletLinks[step],{
+            patterns: [
+                // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+                {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
+            ]
+        }).addTo(mymap);
+
     }
 }
 
@@ -187,7 +186,7 @@ function selectRoute(icon){
     }
     else{
         for (let step = 0; step < links.length; step++){
-            if(links[step][9]-1 == currentIcon && links[step][10]-1 == icon){
+            if(links[step].uNodeID-1 == currentIcon && links[step].dNodeID-1 == icon){
 
                 leafletLinks[step].setStyle({
                     color:'green'
