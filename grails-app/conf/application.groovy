@@ -28,7 +28,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/StudentController/**',       	access: ['permitAll']],
 	[pattern: '/**/StudentJoinController/**',       access: ['permitAll']],
 	[pattern: '/**/StudentTurnController/**',       access: ['permitAll']],
-	[pattern: '/**/statistics/**',        			access: ['permitAll']],
+	[pattern: '/**/professor/**',        			access: ['permitAll']],
 
 	//for access to domains
 	[pattern: '/**/GameSettings/**',        		access: ['permitAll']],
