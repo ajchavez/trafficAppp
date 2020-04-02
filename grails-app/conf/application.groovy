@@ -10,7 +10,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/index/**',       access: ['permitAll']],
 	[pattern: '/**/index.gsp/**',   access: ['permitAll']],
 	[pattern: '/shutdown',       access: ['permitAll']],
-	[pattern: '/assets/**',      access: ['permitAll']],
+	[pattern: '/**/assets/**',      access: ['permitAll']],
 	[pattern: '/**/js/**',       access: ['permitAll']],
 	[pattern: '/**/css/**',      access: ['permitAll']],
 	[pattern: '/**/images/**',   access: ['permitAll']],
@@ -28,12 +28,14 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/StudentController/**',       	access: ['permitAll']],
 	[pattern: '/**/StudentJoinController/**',       access: ['permitAll']],
 	[pattern: '/**/StudentTurnController/**',       access: ['permitAll']],
+	[pattern: '/**/statistics/**',        			access: ['permitAll']],
 
 	//for access to domains
 	[pattern: '/**/GameSettings/**',        		access: ['permitAll']],
 	[pattern: '/**/Link/**',        				access: ['permitAll']],
 	[pattern: '/**/Node/**',        				access: ['permitAll']],
-	[pattern: '/**/StudentTurn/**',        				access: ['permitAll']],
+	[pattern: '/**/StudentTurn/**',        			access: ['permitAll']],
+	[pattern: '/**/postGame/**',        			access: ['permitAll']],
 
 
 
