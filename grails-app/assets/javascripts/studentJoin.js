@@ -8,5 +8,8 @@ function joinGame(){
         type:'POST',
         dataType: 'json',
         data: "value="+JSON.stringify({user: userName}),
+        success: function (data) {
+            document.getElementById("dummy").click()
+        }
     });
 }
