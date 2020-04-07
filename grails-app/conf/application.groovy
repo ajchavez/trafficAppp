@@ -7,8 +7,8 @@ grails.plugin.springsecurity.authority.className = 'trafficapp.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               	access: ['permitAll']],
 	[pattern: '/error',          	access: ['permitAll']],
-	[pattern: '/**/index/**',    	access: ['permitAll']],
-	[pattern: '/**/index.gsp/**',	access: ['permitAll']],
+	[pattern: '/index/**',    		access: ['permitAll']],
+	[pattern: '/index.gsp/**',		access: ['permitAll']],
 	[pattern: '/shutdown',       	access: ['permitAll']],
 	[pattern: '/**/assets/**',   	access: ['permitAll']],
 	[pattern: '/**/js/**',       	access: ['permitAll']],
@@ -24,30 +24,30 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/**/polylineDecorator.js/**',      	access: ['permitAll']],
 
 	//for access to Link and Node tables
-	[pattern: '/**/GameSettingsController/**',      access: ['permitAll']],
+	[pattern: '/**/GameSettingsController/**',      access: ['ROLE_ADMIN']],
 	[pattern: '/**/HomeController/**',       		access: ['permitAll']],
 	[pattern: '/**/LinkController/**',        		access: ['permitAll']],
 	[pattern: '/**/NodeController/**',       		access: ['permitAll']],
-	[pattern: '/**/PostGameController/**',        	access: ['permitAll']],
-	[pattern: '/**/ProfessorController/**',        	access: ['permitAll']],
+	[pattern: '/**/PostGameController/**',        	access: ['ROLE_ADMIN']],
+	[pattern: '/**/ProfessorController/**',        	access: ['ROLE_ADMIN']],
 	[pattern: '/**/StudentController/**',       	access: ['permitAll']],
 	[pattern: '/**/StudentJoinController/**',       access: ['permitAll']],
 	[pattern: '/**/StudentTurnController/**',       access: ['permitAll']],
 
 	//for access to domains
-	[pattern: '/**/GameSettings/**',        		access: ['permitAll']],
+	[pattern: '/**/GameSettings/**',        		access: ['ROLE_ADMIN']],
 	[pattern: '/**/Link/**',        				access: ['permitAll']],
 	[pattern: '/**/Node/**',        				access: ['permitAll']],
 	[pattern: '/**/StudentTurn/**',        			access: ['permitAll']],
 
 	//for access to views
-	[pattern: '/**/gameSettings/**',        		access: ['permitAll']],
+	[pattern: '/**/gameSettings/**',        		access: ['ROLE_ADMIN']],
 	[pattern: '/**/home/**',        				access: ['permitAll']],
 	[pattern: '/**/layouts/**',        				access: ['permitAll']],
 	[pattern: '/**/link/**',        				access: ['permitAll']],
 	[pattern: '/**/node/**',        				access: ['permitAll']],
-	[pattern: '/**/postGame/**',        			access: ['permitAll']],
-	[pattern: '/**/professor/**',        			access: ['permitAll']],
+	[pattern: '/**/postGame/**',        			access: ['ROLE_ADMIN']],
+	[pattern: '/**/professor/**',        			access: ['ROLE_ADMIN']],
 	[pattern: '/**/student/**',        				access: ['permitAll']],
 	[pattern: '/**/StudentJoin/**',       			access: ['permitAll']],
 	[pattern: '/**/StudentTurn/**',       			access: ['permitAll']],
