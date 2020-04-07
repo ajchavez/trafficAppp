@@ -2,5 +2,8 @@ package trafficapp
 
 class StudentController {
 
-    def index() { }
+    def index() {
+        //should run joinGame.js
+    }
+
 }
