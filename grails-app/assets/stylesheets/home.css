@@ -1,40 +1,75 @@
+body{
+    background-image: url("../images/road_bg4.jpeg");
+    background-repeat: no-repeat;
+    background-size: 2463px 1428px;
+}
+
 .home-container {
     font-family: Arial, sans-serif;
-    width:50%;
-    height: 90%;
+    width: 40%;
+    height: 60%;
     padding-top: 2%;
-    margin:auto;
-    margin-top: 3%;
-    background: #d9d9d9;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    background: #bebebe;
     align-content: center;
     text-align: center;
+    border-radius: 25px;
+
+    border: black 5px solid;
 }
 
 .home-header {
     font-family: Arial, sans-serif;
-    font-size: 68px;
+    font-size: 3vw;
     font-weight: bold;
     text-align: center;
 }
 
 
 .professor-button {
-    font-size: 48px !important;
-    width: 500px;
-    height: 100px;
-    margin-top: 5%;
+    font-size: 2.3vw !important;
+    width: 80%;
+    height: 15%;
+    margin-top: 10%;
+    border-radius: 8px;
 }
 
 .student-button {
-    font-size: 48px !important;
-    width: 500px;
-    height: 100px;
-    margin-top: 10%;
+    font-size: 2.3vw !important;
+    width: 80%;
+    height: 15%;
+    margin-top: 5%;
+    border-radius: 8px;
 }
 
 .help-button {
-    font-size: 48px !important;
-    width: 500px;
-    height: 100px;
-    margin-top: 10%;
+    font-size: 1.6vw !important;
+    width: 60%;
+    height: 10%;
+    margin-top: 8%;
+    border-radius: 8px;
+}
+
+.modal-header{
+    background: #dfdfdf;
+}
+
+.modal-body{
+    background: #dfdfdf;
+}
+
+.modal-footer{
+    background: #dfdfdf;
+}
+
+footer {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* spacing between help bullets */
+li:not(:last-child) {
+    margin-bottom: 10px;
 }

@@ -9,8 +9,7 @@
 </head>
 
 <div class="home-container">
-    <div class="home-header">Traffic Jam</div>
-
+    <div class="home-header">CAV Routing Game</div>
 
     <div>
         <g:link controller="gameSettings" action="index">
@@ -27,7 +26,7 @@
     <!-- Button trigger modal -->
     <div>
         <button type="button" class="btn btn-primary help-button" data-toggle="modal" data-target="#exampleModalCenter">
-            How to use the app
+            App Information
         </button>
     </div>
 
@@ -37,15 +36,35 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Help</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle"><b>Welcome to the CAV Routing Game!</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 %{--Modal text goes in here--}%
-                <div class="modal-body">
-                    This is how to use the app
+                <div class="modal-body" align="left">
+
+                    This app is an instructional tool used by Dr. Zhang and his students
+                    in order simulate the routing choices that all automated vehicles will make in the future.<br><br>
+
+                    <b>How the Simulation Works</b><br>
+                    <ul style="list-style-type:circle;">
+                        <li>The simulation takes place on a map that includes several nodes and various paths that connect them.</li>
+                        <li>First, the professor will set up a game session and students will join using their mobile devices.</li>
+                        <li>The app will assign each student with a random start location and a random destination they will be travelling to.</li>
+                        <li>A routing algorithm will then display the fastest path that it calculates for each student's route.</li>
+                        <li>Students will take turns selecting their calculated path until all students have chosen.</li>
+                        <li><b>This marks the end of the first iteration</b></li>
+                    </ul>
+                    <br>
+                    After the first iteration, students will begin again only this time they will be able to <b>choose</b>
+                    between their previous path and a newly calculated path.<br><br>
+
+                    This process will continue until either the professor ends the simulation or all
+                    students decide that they have chosen their quickest route.
+
+
                 </div>
 
                 <div class="modal-footer">
