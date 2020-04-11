@@ -4,34 +4,6 @@ var leafletLinks = [null];
 var leafletNodes = [null];
 var settings = null;
 
-var blackIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
-    iconSize: [25, 41],
-    popupAnchor: [1, -34],
-    iconAnchor: [12, 41],
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-
-    shadowSize: [41, 41]
-});
-var greenIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    iconSize: [25, 41],
-    popupAnchor: [1, -34],
-    iconAnchor: [12, 41],
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-
-    shadowSize: [41, 41]
-});
-var redIcon = L.icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    iconSize: [25, 41],
-    popupAnchor: [1, -34],
-    iconAnchor: [12, 41],
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-
-    shadowSize: [41, 41]
-});
-
 $(document).ready(function() {
     $.when(getSettings()).done(function(a1){
         $.when(getLinks(),getNodes()).done(function(a1){
@@ -118,7 +90,7 @@ function loadNetwork(){
         L.polylineDecorator(leafletLinks[step],{
             patterns: [
                 // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-                {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
+                {offset: '75%', repeat: '100%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
             ]
         }).addTo(mymap);
     }

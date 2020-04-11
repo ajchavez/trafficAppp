@@ -115,10 +115,10 @@ function previousTurn(){
 function loadNetwork(){
     //set up view of centered on network using first node
     var startLatLng = L.latLng(nodes[1].yCoord,nodes[1].xCoord)
-    var mymap = L.map('map').setView(startLatLng, 14);
+    var mymap = L.map('map').setView(startLatLng, 12);
     var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        minZoom: 13,
+        minZoom: 10,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
@@ -160,11 +160,12 @@ function loadNetwork(){
         console.log("uNode: " + links[step].uNodeID + " dNode: " + links[step].dNodeID);
         graph.setEdge(links[step].uNodeID, links[step].dNodeID, weight);
         console.log("weight: " + graph.edge(links[step].uNodeID, links[step].dNodeID));
-        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
+        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"});
+        leafletLinks[step].closeTooltip()
         L.polylineDecorator(leafletLinks[step],{
             patterns: [
                 // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-                {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
+                {offset: '75%', repeat: '100%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
             ]
         }).addTo(mymap);
     }
@@ -240,6 +241,8 @@ function showDijkstras(){
         leafletLinks[link].setStyle({
             color:'green'
         })
+        leafletLinks[link].bringToFront()
+        leafletLinks[link].openTooltip()
     })
     orderLinksPicked = dijkstrasPath.link
     orderNodesPicked = dijkstrasPath.node
@@ -249,6 +252,7 @@ function removePrevious(){
         leafletLinks[link].setStyle({
             color:'black'
         })
+        leafletLinks[link].closeTooltip()
     })
 }
 function removeDijkstras(){
@@ -257,6 +261,7 @@ function removeDijkstras(){
         leafletLinks[link].setStyle({
             color:'black'
         })
+        leafletLinks[link].closeTooltip()
     })
 }
 function showPrevious(){
@@ -266,7 +271,10 @@ function showPrevious(){
             leafletLinks[link].setStyle({
                 color: 'blue'
             })
+            leafletLinks[link].bringToFront()
+            leafletLinks[link].openTooltip()
         })
+
         orderLinksPicked = lastTurn.lastLinkPath
         orderNodesPicked = lastTurn.lastNodePath
     }
