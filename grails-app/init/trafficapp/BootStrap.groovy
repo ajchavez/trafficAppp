@@ -9,13 +9,13 @@ class BootStrap {
         new Node(nodeID: 4, xCoord: -88.565598, yCoord: 47.118147, network: "simple").save()
         new Node(nodeID: 5, xCoord: -88.553624, yCoord: 47.116936, network: "simple").save()
 
-
         new Link(linkID: 1, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 4, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 2, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 5, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 3, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 4, dNodeID: 3, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 4, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 1, bParam: 0, cParam: 0, uNodeID: 5, dNodeID: 3, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 5, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 4, dNodeID: 2, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 6, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 0, uNodeID: 5, dNodeID: 2, network: "Simple", carsOnLink: 0).save()
+
 
         new Node(nodeID: 1, xCoord: -96.77041974, yCoord: 43.61282792, network: "Sioux_Falls").save()
         new Node(nodeID: 2, xCoord: -96.71125063, yCoord: 43.60581298, network: "Sioux_Falls").save()
@@ -42,8 +42,6 @@ class BootStrap {
         new Node(nodeID: 23, xCoord: -96.75090441, yCoord: 43.51485818, network: "Sioux_Falls").save()
         new Node(nodeID: 24, xCoord: -96.74920028, yCoord: 43.50316422, network: "Sioux_Falls").save()
 
-
-        // Links for sioux falls
         new Link(linkID: 1, linkLength: 6,	numLanes: 1, capacity: 25900.20064, freeFlowTravelTime: 6, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 1, dNodeID: 2, network: "Sioux_Falls").save()
         new Link(linkID: 2, linkLength: 4,	numLanes: 1, capacity: 23403.47319, freeFlowTravelTime: 4, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 1, dNodeID: 3, network: "Sioux_Falls").save()
         new Link(linkID: 3, linkLength: 6,	numLanes: 1, capacity: 25900.20064, freeFlowTravelTime: 6, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 2, dNodeID: 1, network: "Sioux_Falls").save()
@@ -120,6 +118,7 @@ class BootStrap {
         new Link(linkID: 74, linkLength: 4, numLanes: 1, capacity: 5091.256152, freeFlowTravelTime: 4, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 24, dNodeID: 13, network: "Sioux_Falls").save()
         new Link(linkID: 75, linkLength: 3, numLanes: 1, capacity: 4885.357564, freeFlowTravelTime: 3, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 24, dNodeID: 21, network: "Sioux_Falls").save()
         new Link(linkID: 76, linkLength: 2, numLanes: 1, capacity: 5078.508436, freeFlowTravelTime: 2, alpha: 0.15, beta: 4, aParam: 0, bParam: 1, cParam: 0, uNodeID: 24, dNodeID: 23, network: "Sioux_Falls").save()
+
 
     }
     def destroy = {

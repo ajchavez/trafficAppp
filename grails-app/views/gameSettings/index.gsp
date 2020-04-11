@@ -54,10 +54,10 @@
                                       placeholder="e.g. 3"></div>
 
 
-            <div class="box c"><label for="algorithm">Algorithm</label></div>
+            <div class="box c"><label for="algorithm">Cost Function</label></div>
 
             <div class="box d"><g:select name="algorithm" from="${['BPR', 'Polynomial']}"
-                                         noSelection="['': '-Select An Algorithm-']"
+                                         noSelection="['': '-Select A Cost Function-']"
                                          id="algorithm"/></div>
 
             <div class="box e"><label for="gameCode">Game Code</label></div>
