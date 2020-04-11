@@ -31,9 +31,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'game-settings.css')}">
     <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'bootstrap.css')}">
     <asset:javascript src="application.js"/>
+    <asset:javascript  type="text/javascript" src="gameSettings.js"/>
+    <asset:stylesheet type="text/css" href="gameSettings.css"/>
     <title>Game Settings</title>
 </head>
 
@@ -58,15 +61,19 @@
                                          id="algorithm"/></div>
 
             <div class="box e"><label for="gameCode">Game Code</label></div>
+            <div class="box b"><input type="text" id="gameCode" name="gameCode"></div>
+            <div class="box c"><label for="network">Network</label></div>
+            <div class="box d"><g:select name="network" from="${['Simple','','Sioux_Falls', 'Houghton_Hancock']}"
+                                         noSelection="['': '-Select A Network-']"
+                                         id="network"/></div>
 
-            <div class="box f"><g:textField name="gameCode" value="${myValue}"/></div>
         </div>
 
     %{-- Change form input items corresponding to domain changes --}%
         <div style="text-align: center">
-            <g:actionSubmit class="btn btn-primary submit-button" value="Start Game" action="save"/>
+            <button class="btn btn-primary submit-button" onclick = "saveGameCode()">Start Game</button>
         </div>
-
+        <g:actionSubmit id = "dummy" value="Start Game" action="save"/>
     </g:form>
 
 </html>

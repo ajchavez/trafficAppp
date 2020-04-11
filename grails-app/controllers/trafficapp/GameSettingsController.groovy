@@ -36,7 +36,7 @@ class GameSettingsController {
         gs.save()
 
         // Change this line to redirect gameSetting/index.gsp form submit to the professor's view when clicked
-        redirect url: '/professor'
+        redirect url: '/professorWait'
         /*
         if (gameSettings == null) {
             notFound()

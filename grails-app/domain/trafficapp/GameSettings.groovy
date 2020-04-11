@@ -4,12 +4,16 @@ class GameSettings {
 
     int maxIterations
     String algorithm
+    int numStudents
+    String gameCode
+    String network
 
-    // Removed because each user gets random start/end instead of the same start/end for everybody
-    //int startNodeID
-    //int endNodeID
+
 
     static constraints = {
+        numStudents blank: false, nullable: true
+        gameCode unique: true, blank: false, nullable: false
+        network blank: false, nullable: false
         //add constraints
     }
 }
