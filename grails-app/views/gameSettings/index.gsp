@@ -63,7 +63,7 @@
             <div class="box e"><label for="gameCode">Game Code</label></div>
             <div class="box b"><input type="text" id="gameCode" name="gameCode"></div>
             <div class="box c"><label for="network">Network</label></div>
-            <div class="box d"><g:select name="network" from="${['Simple','','Sioux_Falls', 'Houghton_Hancock']}"
+            <div class="box d"><g:select name="network" from="${['Simple','Sioux_Falls', 'Houghton_Hancock']}"
                                          noSelection="['': '-Select A Network-']"
                                          id="network"/></div>
 

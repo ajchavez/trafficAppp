@@ -160,7 +160,6 @@ function loadNetwork(){
         console.log("uNode: " + links[step].uNodeID + " dNode: " + links[step].dNodeID);
         graph.setEdge(links[step].uNodeID, links[step].dNodeID, weight);
         console.log("weight: " + graph.edge(links[step].uNodeID, links[step].dNodeID));
-2
         leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
         L.polylineDecorator(leafletLinks[step],{
             patterns: [
@@ -173,7 +172,7 @@ function loadNetwork(){
     var shortestPath = graphlib.alg.dijkstra(graph, 1, function(e) { return graph.edge(e); });
     console.log(shortestPath);
     dijkstrasPath = getShortestPath(lastTurn.startNode, lastTurn.endNode, shortestPath);
-    checkIfTurn()
+    getCurrentTurn()
 }
 function getCurrentTurn(){
     var currentTurn = null
@@ -183,8 +182,8 @@ function getCurrentTurn(){
         dataType: 'text',
         data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
         success: function (data) {
-            if((parseInt(data) + 1) % settings.numStudents == lastTurn.turnOrder){
-                if(currentTurn == null){
+            if((parseInt(data)) % settings.numStudents == lastTurn.turnOrder){
+                if(currentTurn == null && settings.numStudents != 1){
                     refreshPage()
                 }
             }
@@ -282,6 +281,7 @@ function endTurn(){
         type:'POST',
         dataType: 'json',
         data: "value="+JSON.stringify({user: localStorage.getItem("username"), gameCode:localStorage.getItem("gameCode"), network:settings.network,pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastTurn.lastNodePath, lastLinkPath:lastTurn.lastLinkPath }),
+        success:refreshPage()
     });
 }
 

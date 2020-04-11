@@ -1,8 +1,9 @@
-var nodes = [];
-var links = [];
-var leafletLinks = [];
-var leafletNodes = [];
-var algorithm
+var nodes = [null];
+var links = [null];
+var leafletLinks = [null];
+var leafletNodes = [null];
+var settings = null;
+
 var blackIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
     iconSize: [25, 41],
@@ -12,96 +13,139 @@ var blackIcon = L.icon({
 
     shadowSize: [41, 41]
 });
+var greenIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    iconSize: [25, 41],
+    popupAnchor: [1, -34],
+    iconAnchor: [12, 41],
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+
+    shadowSize: [41, 41]
+});
+var redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    iconSize: [25, 41],
+    popupAnchor: [1, -34],
+    iconAnchor: [12, 41],
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+
+    shadowSize: [41, 41]
+});
 
 $(document).ready(function() {
-    //load Nodes
-    $.ajax({
-        url: "/node/queryNodes",
-        dataType: 'json',
-        success: function (data) {
-            data.forEach(function(row){
-                nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
-            });
-            getLinks()
-        }
+    $.when(getSettings()).done(function(a1){
+        $.when(getLinks(),getNodes()).done(function(a1){
+            loadNetwork()
+        })
     })
 });
-function getLinks(){
-    //load Links
-    $.ajax({
-        url: "/link/queryLinks",
+function getSettings(){
+    //load settings
+    return $.ajax({
+        url: "/StudentTurn/getSettings",
+        type:'POST',
         dataType: 'json',
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
         success: function (data) {
-            data.forEach(function(row){
-                links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
-                    row.cParam,row.uNodeID, row.dNodeID, row.carsOnLink])
-            });
-
-            getAlgorithm()
+            console.log(data)
+            settings = data
         }
     });
 }
-function getAlgorithm(){
-    //loadAlgorithm
-    $.ajax({
-        url: "/StudentTurn/getAlgorithm",
-        type:'GET',
+function getNodes(){
+    //load Nodes
+    return $.ajax({
+        url: "/node/queryNodes",
+        type:'POST',
         dataType: 'json',
+        data: "value="+JSON.stringify({network: settings.network}),
         success: function (data) {
-            algorithm = data.algorithm
-            console.log(data.algorithm)
-            loadNetwork()
+            data.forEach(function(row){
+                nodes.push(row);
+            });
+        }
+    })
+};
+function getLinks(){
+    //load Links
+    return $.ajax({
+        url: "/link/queryLinks",
+        type:'POST',
+        dataType: 'json',
+        data: "value="+JSON.stringify({network: settings.network}),
+        success: function (data) {
+            data.forEach(function(row){
+                links.push(row)
+            });
+
         }
     });
-
 }
 
 function loadNetwork(){
-    //set up view of centered on houghton, using street map
-    var startLatLng = L.latLng(47.117432,-88.558785)
+    //set up view of centered on network using first node
+    var startLatLng = L.latLng(nodes[1].yCoord,nodes[1].xCoord)
     var mymap = L.map('map').setView(startLatLng, 14);
     var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        minZoom: 13,
+
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
-    for (let step = 0; step < nodes.length; step++) {
-        leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:blackIcon}).addTo(mymap));
+    console.log("Start node printing");
+    for (let step = 1; step < nodes.length; step++) {
+        // Add node to graph by it's nodeID and give it a label for logging purposes
+        leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord)));
     }
 
-    for (let step = 0; step < links.length; step++) {
-        var path = [[nodes[links[step][9] - 1][1], nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1], nodes[links[step][10] - 1][0]]];
-        leafletLinks.push(L.polyline(path, {color: 'black', weight: 10}).addTo(mymap));
+    console.log("\nStart link printing");
+
+    for (let step = 1; step < links.length; step++){
+        var path = [[nodes[links[step].uNodeID].yCoord, nodes[links[step].uNodeID].xCoord], [nodes[links[step].dNodeID].yCoord,nodes[links[step].dNodeID].xCoord]];
+        leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
         let weight = 0;
-        if (algorithm == "BPR")
-            weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
-        else {
-            weight = PCF(links[step][6], links[step][7], links[step][8], links[step][11]);
+        if(settings.algorithm == "BPR")
+            weight = BPR(links[step].freeFlowTravelTime, links[step].carsOnLink, links[step].capacity, links[step].alpha, links[step].beta);
+        else{
+            weight = PCF(links[step].aParam, links[step].bParam, links[step].cParam, links[step].carsOnLink);
         }
-        leafletLinks[step].bindTooltip("" + weight, {permanent: true, direction: "center"}).openTooltip();
-        if (links[step][3] == 1) {
-            L.polylineDecorator(leafletLinks[step], {
-                patterns: [
-                    // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-                    {
-                        offset: '12%',
-                        repeat: '20%',
-                        symbol: L.Symbol.arrowHead({
-                            pixelSize: 15,
-                            polygon: false,
-                            pathOptions: {color: "yellow", stroke: true}
-                        })
-                    }
-                ]
-            }).addTo(mymap);
-        }
+
+        // Add links to the graph
+        // in order to assign a weight to an edge using graphlib just set it's label to
+        // what you want it's weight to be, which is just the third argument to setEdge()
+        console.log("uNode: " + links[step].uNodeID + " dNode: " + links[step].dNodeID);
+
+        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
+        L.polylineDecorator(leafletLinks[step],{
+            patterns: [
+                // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+                {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
+            ]
+        }).addTo(mymap);
     }
+
+    getCurrentTurn()
+}
+function getCurrentTurn(){
+    var currentTurn = null
+    $.ajax({
+        url: "/StudentTurn/getTurnNumber",
+        type:'POST',
+        dataType: 'text',
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
+        success: function (data) {
+            if (currentTurn != null && currentTurn != data) {
+                refreshPage()
+            }
+            setTimeout(getCurrentTurn(), 5000)
+            currentTurn = data
+        }
+    });
 }
 
 function refreshPage(){
     window.location.reload();
 }
+
 //xa number of cars on the path
 
 function BPR(ta, xa, ca, alpha, beta){
