@@ -41,6 +41,8 @@ var redIcon = L.icon({
 });
 
 $(document).ready(function() {
+    $("#endTurn").prop('disabled', true);
+    $(".pathChoice").prop('disabled', true);
     $.when(getSettings()).done(function(a1){
         if(settings.numStudents > 0) {
             $.when(getNodes(), getLinks(), previousTurn()).done(function (a1, a2, a3) {
@@ -180,8 +182,12 @@ function getCurrentTurn(){
         data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
         success: function (data) {
             if((parseInt(data)) % settings.numStudents == lastTurn.turnOrder){
-                if(currentTurn == null && settings.numStudents != 1){
+                if(currentTurn != null && settings.numStudents != 1){
                     refreshPage()
+                }
+                else{
+                    alert("It is your turn!")
+                    $(".pathChoice").prop('disabled', false);
                 }
             }
             else {
@@ -230,6 +236,7 @@ function getShortestPath(start, end, dijkstraOutput) {
 }
 
 function showDijkstras(){
+    $("#endTurn").prop('disabled', false);
     if(lastTurn.lastLinkPath != null){
         removePrevious()
     }
@@ -261,6 +268,7 @@ function removeDijkstras(){
     })
 }
 function showPrevious(){
+    $("#endTurn").prop('disabled', false);
     if(lastTurn.lastLinkPath != null) {
         removeDijkstras()
         lastTurn.lastLinkPath.forEach(function (link) {

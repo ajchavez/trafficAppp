@@ -17,12 +17,13 @@
 <div id="map"></div>
 
 <div id="buttonContainer">
-    <button onclick="showPrevious()">Previous</button>
-    <button onclick="showDijkstras()">Shortest</button>
+
+    <button class="pathChoice" onclick="showPrevious()">Previous</button>
+    <button class="pathChoice" onclick="showDijkstras()">Shortest</button>
     <button onclick="refreshPage()">Refresh</button>
-    <button onclick="endTurn()">End Turn</button>
+    <button id = "endTurn" onclick="endTurn()">End Turn</button>
+
 </div>
 
 </body>
 </html>
-
