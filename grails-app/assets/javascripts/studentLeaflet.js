@@ -110,7 +110,7 @@ function loadNetwork(){
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
-    for (let step = 0; step < nodes.length; step++) {
+    for (var step = 0; step < nodes.length; step++) {
         var marker = null;
         if(step == start){
             leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:greenIcon}).addTo(mymap));
@@ -126,10 +126,10 @@ function loadNetwork(){
         });
     }
 
-    for (let step = 0; step < links.length; step++){
+    for (var step = 0; step < links.length; step++){
         var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
-        let weight = 0;
+        var weight = 0;
         if(algorithm == "BPR")
             weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
         else{
@@ -164,7 +164,7 @@ function refreshPage(){
 function selectRoute(icon){
     if(orderNodesPicked.includes(icon)){
         var cutoff = -1;
-        for(let step = 0; step < orderNodesPicked.length; step++){
+        for(var step = 0; step < orderNodesPicked.length; step++){
             if (orderNodesPicked[step] == icon){
                 cutoff = step;
             }
@@ -186,7 +186,7 @@ function selectRoute(icon){
         currentIcon = icon;
     }
     else{
-        for (let step = 0; step < links.length; step++){
+        for (var step = 0; step < links.length; step++){
             if(links[step][9]-1 == currentIcon && links[step][10]-1 == icon){
 
                 leafletLinks[step].setStyle({
