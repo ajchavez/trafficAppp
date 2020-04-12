@@ -16,7 +16,7 @@ var blackIcon = L.icon({
 $(document).ready(function() {
     //load Nodes
     $.ajax({
-        url: "/node/queryNodes",
+        url: "/trafficapp/node/queryNodes",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -29,7 +29,7 @@ $(document).ready(function() {
 function getLinks(){
     //load Links
     $.ajax({
-        url: "/link/queryLinks",
+        url: "/trafficapp/link/queryLinks",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -44,7 +44,7 @@ function getLinks(){
 function getAlgorithm(){
     //loadAlgorithm
     $.ajax({
-        url: "/StudentTurn/getAlgorithm",
+        url: "/trafficapp/StudentTurn/getAlgorithm",
         type:'GET',
         dataType: 'json',
         success: function (data) {

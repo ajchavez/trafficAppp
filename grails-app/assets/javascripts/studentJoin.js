@@ -4,7 +4,7 @@ function joinGame(){
     localStorage.setItem("gameID", gameID)
     localStorage.setItem("username", userName)
     $.ajax({
-        url: "/StudentJoin/addStudent",
+        url: "/trafficapp/StudentJoin/addStudent",
         type:'POST',
         dataType: 'json',
         data: "value="+JSON.stringify({user: userName}),

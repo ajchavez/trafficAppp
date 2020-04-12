@@ -41,7 +41,7 @@ var redIcon = L.icon({
 $(document).ready(function() {
     //load Nodes
     $.ajax({
-        url: "/node/queryNodes",
+        url: "/trafficapp/node/queryNodes",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -54,7 +54,7 @@ $(document).ready(function() {
 function getLinks(){
     //load Links
     $.ajax({
-        url: "/link/queryLinks",
+        url: "/trafficapp/link/queryLinks",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -69,7 +69,7 @@ function getLinks(){
 function getAlgorithm(){
     //loadAlgorithm
     $.ajax({
-        url: "/StudentTurn/getAlgorithm",
+        url: "/trafficapp/StudentTurn/getAlgorithm",
         type:'GET',
         dataType: 'json',
         success: function (data) {
@@ -83,7 +83,7 @@ function getAlgorithm(){
 function previousTurn(){
     //loadPreviousTurn
     $.ajax({
-        url: "/StudentTurn/getLastTurn",
+        url: "/trafficapp/StudentTurn/getLastTurn",
         type:'Post',
         dataType: 'json',
         data: "value="+JSON.stringify({user: localStorage.getItem("username")}),
@@ -150,7 +150,7 @@ function loadNetwork(){
 //send choices to update choices and update congestion
 function endTurn(){
     $.ajax({
-        url: "/StudentTurn/addTurn",
+        url: "/trafficapp/StudentTurn/addTurn",
         type:'POST',
         dataType: 'json',
         data: "value="+JSON.stringify({user: localStorage.getItem("username"), pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
