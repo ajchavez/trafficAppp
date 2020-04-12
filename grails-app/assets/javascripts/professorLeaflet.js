@@ -16,7 +16,7 @@ var blackIcon = L.icon({
 $(document).ready(function() {
     //load Nodes
     $.ajax({
-        url: "/node/queryNodes",
+        url: "/trafficapp/node/queryNodes",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -29,7 +29,7 @@ $(document).ready(function() {
 function getLinks(){
     //load Links
     $.ajax({
-        url: "/link/queryLinks",
+        url: "/trafficapp/link/queryLinks",
         dataType: 'json',
         success: function (data) {
             data.forEach(function(row){
@@ -44,7 +44,7 @@ function getLinks(){
 function getAlgorithm(){
     //loadAlgorithm
     $.ajax({
-        url: "/StudentTurn/getAlgorithm",
+        url: "/trafficapp/StudentTurn/getAlgorithm",
         type:'GET',
         dataType: 'json',
         success: function (data) {
@@ -66,14 +66,14 @@ function loadNetwork(){
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
-    for (let step = 0; step < nodes.length; step++) {
+    for (var step = 0; step < nodes.length; step++) {
         leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:blackIcon}).addTo(mymap));
     }
 
-    for (let step = 0; step < links.length; step++) {
+    for (var step = 0; step < links.length; step++) {
         var path = [[nodes[links[step][9] - 1][1], nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1], nodes[links[step][10] - 1][0]]];
         leafletLinks.push(L.polyline(path, {color: 'black', weight: 10}).addTo(mymap));
-        let weight = 0;
+        var weight = 0;
         if (algorithm == "BPR")
             weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
         else {
