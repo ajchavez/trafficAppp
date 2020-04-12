@@ -17,6 +17,7 @@ apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
+// COMMENT OUT FOR DEPLOYMENT TESTING
 apply plugin:"asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
 

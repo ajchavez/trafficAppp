@@ -1,5 +1,4 @@
 function joinGame(){
-    // bottom 2 lines were let
     var userName = document.getElementById('username').value
     var gameID = document.getElementById('gameID').value
     localStorage.setItem("gameID", gameID)
