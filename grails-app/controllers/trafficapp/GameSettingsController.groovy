@@ -1,5 +1,6 @@
 package trafficapp
 
+import grails.converters.JSON
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
@@ -23,6 +24,23 @@ class GameSettingsController {
         */
     }
 
+    // Removes all the students and resets the link weights
+    def resetGame() {
+        def students = StudentTurn.findAll()
+        students.each {
+           // it.delete() // Clears the StudentTurn table after the game is done??????????
+            it.delete(flush: true)
+        }
+
+        // Reset the links
+        def links = Link.findAll()
+        links.each {
+            it.carsOnLink = 0
+            it.save(flush: true)
+        }
+        println("Database has been reset")
+    }
+
     def show(Long id) {
         respond gameSettingsService.get(id)
     }
@@ -32,8 +50,10 @@ class GameSettingsController {
     }
 
     def save(GameSettings gameSettings) {
+        resetGame() // Reset the Database from the last game before starting the new one
         def gs = new GameSettings(params)
         gs.save()
+
 
         // Change this line to redirect gameSetting/index.gsp form submit to the professor's view when clicked
         redirect url: '/professorWait'

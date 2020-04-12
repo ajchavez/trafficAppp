@@ -10,23 +10,4 @@ class PostGameController {
         //render view: "index", model: [nodeList: nodeList]
     }
 
-    // Removes all the student IDs and
-    def removeStudentIDs() {
-        def value = JSON.parse(params.value)
-        def students = StudentTurn.findAllByGameCode(value.gameCode)
-        students.each {
-            it.delete() // Clears the StudentTurn table after the game is done??????????
-            it.save(flush: true)
-        }
-    }
-
-    // Sets carsOnLink to 0 for each link based on the input network name
-    def resetLinks() {
-        def value = JSON.parse(params.value)
-        def links = Link.findAllByNetwork(value.network)
-        links.each {
-            it.carsOnLink = 0
-            it.save(flush: true)
-        }
-    }
 }

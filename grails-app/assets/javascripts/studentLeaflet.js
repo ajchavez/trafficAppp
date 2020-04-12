@@ -123,13 +123,12 @@ function loadNetwork(){
     }).addTo(mymap);
 
     console.log("Start node printing");
-    for (let step = 1; step < nodes.length; step++) {
+    for (var step = 1; step < nodes.length; step++) {
         var marker = null;
 
 
         // Add node to graph by it's nodeID and give it a label for logging purposes
         graph.setNode(nodes[step].nodeID, nodes[step].nodeID);
-        console.log(graph.node(nodes[step].nodeID));
 
         if(step == lastTurn.startNode){
             leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:greenIcon}).addTo(mymap));
@@ -142,12 +141,10 @@ function loadNetwork(){
         }
     }
 
-    console.log("\nStart link printing");
-
-    for (let step = 1; step < links.length; step++){
+    for (var step = 1; step < links.length; step++){
         var path = [[nodes[links[step].uNodeID].yCoord, nodes[links[step].uNodeID].xCoord], [nodes[links[step].dNodeID].yCoord,nodes[links[step].dNodeID].xCoord]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
-        let weight = 0;
+        var weight = 0;
         if(settings.algorithm == "BPR")
             weight = BPR(links[step].freeFlowTravelTime, links[step].carsOnLink, links[step].capacity, links[step].alpha, links[step].beta);
         else{
@@ -170,8 +167,7 @@ function loadNetwork(){
         }).addTo(mymap);
     }
 
-    var shortestPath = graphlib.alg.dijkstra(graph, 1, function(e) { return graph.edge(e); });
-    console.log(shortestPath);
+    var shortestPath = graphlib.alg.dijkstra(graph, lastTurn.startNode, function(e) { return graph.edge(e); });
     dijkstrasPath = getShortestPath(lastTurn.startNode, lastTurn.endNode, shortestPath);
     getCurrentTurn()
 }

@@ -1,6 +1,6 @@
 function joinGame(){
-    let userName = document.getElementById('username').value
-    let gameCode = document.getElementById('gameID').value
+    var userName = document.getElementById('username').value
+    var gameCode = document.getElementById('gameID').value
     localStorage.setItem("gameCode", gameCode)
     localStorage.setItem("username", userName)
     $.ajax({

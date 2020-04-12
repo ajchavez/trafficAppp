@@ -37,6 +37,7 @@
     <asset:javascript src="application.js"/>
     <asset:javascript  type="text/javascript" src="gameSettings.js"/>
     <asset:stylesheet type="text/css" href="gameSettings.css"/>
+
     <title>Game Settings</title>
 </head>
 
@@ -71,7 +72,7 @@
 
     %{-- Change form input items corresponding to domain changes --}%
         <div style="text-align: center">
-            <button class="btn btn-primary submit-button" onclick = "saveGameCode()">Start Game</button>
+            <button class="btn btn-primary submit-button" onclick = "saveGameCode()">Continue</button>
         </div>
         <g:actionSubmit id = "dummy" value="Start Game" action="save"/>
     </g:form>

@@ -24,6 +24,8 @@ class StudentTurnController {
         render GameSettings.findAllByGameCode(value.gameCode).last() as JSON
     }
 
+
+
     def addTurn(){
         //add turn to database
         def turn = JSON.parse(params.value)

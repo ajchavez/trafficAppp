@@ -3,11 +3,11 @@ package trafficapp
 class BootStrap {
 
     def init = { servletContext ->
-        new Node(nodeID: 1, xCoord: -88.560008, yCoord: 47.112387, network: "simple").save()
-        new Node(nodeID: 2, xCoord: -88.559289, yCoord: 47.117432, network: "simple").save()
-        new Node(nodeID: 3, xCoord: -88.558785, yCoord: 47.119739, network: "simple").save()
-        new Node(nodeID: 4, xCoord: -88.565598, yCoord: 47.118147, network: "simple").save()
-        new Node(nodeID: 5, xCoord: -88.553624, yCoord: 47.116936, network: "simple").save()
+        new Node(nodeID: 1, xCoord: -88.560008, yCoord: 47.112387, network: "Simple").save()
+        new Node(nodeID: 2, xCoord: -88.559289, yCoord: 47.117432, network: "Simple").save()
+        new Node(nodeID: 3, xCoord: -88.558785, yCoord: 47.119739, network: "Simple").save()
+        new Node(nodeID: 4, xCoord: -88.565598, yCoord: 47.118147, network: "Simple").save()
+        new Node(nodeID: 5, xCoord: -88.553624, yCoord: 47.116936, network: "Simple").save()
 
         new Link(linkID: 1, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 4, network: "Simple", carsOnLink: 0).save()
         new Link(linkID: 2, linkLength: 1, numLanes: 1, capacity: 4, freeFlowTravelTime: 1, alpha: 0.15, beta: 4, aParam: 0, bParam: 0, cParam: 1, uNodeID: 1, dNodeID: 5, network: "Simple", carsOnLink: 0).save()
