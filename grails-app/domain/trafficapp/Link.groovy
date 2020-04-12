@@ -15,10 +15,11 @@ class Link {
     int uNodeID
     int dNodeID
     int carsOnLink
+    String network
     // Add network id field
 
     static constraints = {
-        linkID unique: true, blank: false, nullable: false
+        linkID unique: false, blank: false, nullable: false
         linkLength blank: false, nullable: false
         numLanes blank: false, nullable: false
         capacity blank: false, nullable: false

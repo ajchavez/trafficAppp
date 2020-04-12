@@ -1,15 +1,17 @@
-var nodes = [];
-var links = [];
-var start = null;
-var end = null;
-var currentIcon = null;
-var leafletLinks = [];
-var leafletNodes = [];
+var nodes = [null];
+var links = [null];
+var leafletLinks = [null];
+var leafletNodes = [null];
 var orderNodesPicked = [];
 var orderLinksPicked = [];
-var lastNode= [];
-var lastLink= [];
-var algorithm = "d"
+var settings = null;
+var dijkstrasPath = null
+
+// graphlib references
+// https://github.com/dagrejs/graphlib/wiki/API-Reference#graph-concepts
+// https://github.com/dagrejs/graphlib/wiki
+var graph = new graphlib.Graph({directed: true});
+
 var blackIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
     iconSize: [25, 41],
@@ -39,168 +41,268 @@ var redIcon = L.icon({
 });
 
 $(document).ready(function() {
-    //load Nodes
-    $.ajax({
-        url: "/trafficapp/node/queryNodes",
-        dataType: 'json',
-        success: function (data) {
-            data.forEach(function(row){
-                nodes.push([parseFloat(row.xCoord),parseFloat(row.yCoord)])
-            });
-            getLinks()
+    $("#endTurn").prop('disabled', true);
+    $(".pathChoice").prop('disabled', true);
+    $.when(getSettings()).done(function(a1){
+        if(settings.numStudents > 0) {
+            $.when(getNodes(), getLinks(), previousTurn()).done(function (a1, a2, a3) {
+                loadNetwork()
+            })
+        }
+        else{
+            setInterval(function(){
+                getSettings()
+                if(settings.numStudents > 0){
+                    refreshPage()
+                }
+            },5000);
         }
     })
+
 });
-function getLinks(){
-    //load Links
-    $.ajax({
-        url: "/trafficapp/link/queryLinks",
+function getSettings(){
+    //load settings
+    return $.ajax({
+        url: "/trafficapp/StudentTurn/getSettings",
+        type:'POST',
         dataType: 'json',
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
+        success: function (data) {
+            settings = data
+        }
+    });
+}
+function getNodes(){
+    //load Nodes
+    return $.ajax({
+        url: "/trafficapp/node/queryNodes",
+        type:'POST',
+        dataType: 'json',
+        data: "value="+JSON.stringify({network: settings.network}),
         success: function (data) {
             data.forEach(function(row){
-                links.push([row.linkLength, row.numLanes, row.capacity, row.freeFlowTravelTime, row.alpha, row.beta, row.aParam, row.bParam,
-                    row.cParam,row.uNodeID, row.dNodeID, row.carsOnLink])
+                nodes.push(row);
             });
-
-            getAlgorithm()
         }
-    });
-}
-function getAlgorithm(){
-    //loadAlgorithm
-    $.ajax({
-        url: "/trafficapp/StudentTurn/getAlgorithm",
-        type:'GET',
+    })
+};
+function getLinks(){
+    //load Links
+
+    return $.ajax({
+        url: "/trafficapp/link/queryLinks",
+        type:'POST',
         dataType: 'json',
+        data: "value="+JSON.stringify({network: settings.network}),
         success: function (data) {
-            algorithm = data.algorithm
-            console.log(data.algorithm)
-            previousTurn()
+            data.forEach(function(row){
+                links.push(row)
+            });
         }
     });
-
 }
+
 function previousTurn(){
     //loadPreviousTurn
-    $.ajax({
+
+    return $.ajax({
         url: "/trafficapp/StudentTurn/getLastTurn",
-        type:'Post',
+        type:'POST',
         dataType: 'json',
-        data: "value="+JSON.stringify({user: localStorage.getItem("username")}),
+        data: "value="+JSON.stringify({user: localStorage.getItem("username"), gameCode: localStorage.getItem("gameCode")}),
         success: function (data) {
-            lastNode = data.lastNodePath
-            lastLink = data.lastLinkPath
-            loadNetwork()
+            lastTurn = data
         }
     });
 }
 
 function loadNetwork(){
-    start = 0;
-    currentIcon = 0
-    end = 2;
-    orderNodesPicked.push(start);
-
-    //set up view of centered on houghton, using street map
-    var startLatLng = L.latLng(47.117432,-88.558785)
-    var mymap = L.map('map').setView(startLatLng, 14);
+    //set up view of centered on network using first node
+    var startLatLng = L.latLng(nodes[1].yCoord,nodes[1].xCoord)
+    var mymap = L.map('map').setView(startLatLng, 12);
     var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        minZoom: 13,
+        minZoom: 10,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mymap);
 
-    for (var step = 0; step < nodes.length; step++) {
+
+    console.log("Start node printing");
+    for (var step = 1; step < nodes.length; step++) {
         var marker = null;
-        if(step == start){
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:greenIcon}).addTo(mymap));
+
+
+        // Add node to graph by it's nodeID and give it a label for logging purposes
+        graph.setNode(nodes[step].nodeID, nodes[step].nodeID);
+
+        if(step == lastTurn.startNode){
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:greenIcon}).addTo(mymap));
         }
-        else if(step == end){
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:redIcon}).addTo(mymap));
+        else if(step == lastTurn.endNode){
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord), {icon:redIcon}).addTo(mymap));
         }
         else{
-            leafletNodes.push(L.marker(L.latLng(nodes[step][1],nodes[step][0]), {icon:blackIcon}).addTo(mymap));
+            leafletNodes.push(L.marker(L.latLng(nodes[step].yCoord,nodes[step].xCoord)));
         }
-        leafletNodes[step].on('click',function(){
-            selectRoute(step);
-        });
     }
 
-    for (var step = 0; step < links.length; step++){
-        var path = [[nodes[links[step][9]-1][1],nodes[links[step][9] - 1][0]], [nodes[links[step][10] - 1][1],nodes[links[step][10] - 1][0]]];
+
+    for (var step = 1; step < links.length; step++){
+        var path = [[nodes[links[step].uNodeID].yCoord, nodes[links[step].uNodeID].xCoord], [nodes[links[step].dNodeID].yCoord,nodes[links[step].dNodeID].xCoord]];
         leafletLinks.push(L.polyline(path, {color: 'black',weight:10}).addTo(mymap));
         var weight = 0;
-        if(algorithm == "BPR")
-            weight = BPR(links[step][3], links[step][11], links[step][2], links[step][4], links[step][5]);
+        if(settings.algorithm == "BPR")
+            weight = BPR(links[step].freeFlowTravelTime, links[step].carsOnLink, links[step].capacity, links[step].alpha, links[step].beta);
         else{
-            weight = PCF(links[step][6], links[step][7], links[step][8], links[step][11]);
+            weight = PCF(links[step].aParam, links[step].bParam, links[step].cParam, links[step].carsOnLink);
         }
-        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"}).openTooltip();
-        if(links[step][3] == 1){
-            L.polylineDecorator(leafletLinks[step],{
-                patterns: [
-                    // defines a pattern of 10px-wide dashes, repeated every 20px on the line
-                    {offset: '12%', repeat: '20%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
-                ]
-            }).addTo(mymap);
-        }
+
+        // Add links to the graph
+        // in order to assign a weight to an edge using graphlib just set it's label to
+        // what you want it's weight to be, which is just the third argument to setEdge()
+        console.log("uNode: " + links[step].uNodeID + " dNode: " + links[step].dNodeID);
+        graph.setEdge(links[step].uNodeID, links[step].dNodeID, weight);
+        console.log("weight: " + graph.edge(links[step].uNodeID, links[step].dNodeID));
+        leafletLinks[step].bindTooltip(""+weight, {permanent: true, direction:"center"});
+        leafletLinks[step].closeTooltip()
+        L.polylineDecorator(leafletLinks[step],{
+            patterns: [
+                // defines a pattern of 10px-wide dashes, repeated every 20px on the line
+                {offset: '75%', repeat: '100%', symbol: L.Symbol.arrowHead({pixelSize: 15, polygon: false, pathOptions: {color:"yellow",stroke: true}})}
+            ]
+        }).addTo(mymap);
     }
+
+    var shortestPath = graphlib.alg.dijkstra(graph, lastTurn.startNode, function(e) { return graph.edge(e); });
+    dijkstrasPath = getShortestPath(lastTurn.startNode, lastTurn.endNode, shortestPath);
+    getCurrentTurn()
+}
+function getCurrentTurn(){
+    var currentTurn = null
+    $.ajax({
+        url: "/trafficapp/StudentTurn/getTurnNumber",
+        type:'POST',
+        dataType: 'text',
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
+        success: function (data) {
+            if((parseInt(data)) % settings.numStudents == lastTurn.turnOrder){
+                if(currentTurn != null && settings.numStudents != 1){
+                    refreshPage()
+                }
+                else{
+                    alert("It is your turn!")
+                    $(".pathChoice").prop('disabled', false);
+                }
+            }
+            else {
+                if(currentTurn != null && currentTurn != data){
+                    refreshPage()
+                }
+                setTimeout(getCurrentTurn(),5000)
+                currentTurn = data
+            }
+        }
+    });
+}
+// Start: the start nodeID for the student
+// End: the end nodeID for the student
+// disjstraOutput[]: The output from running graphlib.alg.dijkstra, which is an array of objects
+// Returns the list of the nodeIDs that make up the shortest path between two nodes
+// TODO: Test on a bigger map
+function getShortestPath(start, end, dijkstraOutput) {
+    var finalPathNode = []; // Contains the nodeIDs of all the nodes in the shortest path
+    var finalPathLink = [];
+    // Initialize the current node to the last node in the path so we can work backwards
+    var currentNode = end;
+
+    // Loop backwards through the list of all nodes returned by the dijkstras algorithm
+    // to find only the nodes on the shortest path
+    // when dijkstraOutput[currentNode].predecessor is undefined
+    // then that means that there is no predecessor and you are at
+    // the start node
+    while (dijkstraOutput[currentNode].predecessor !== undefined) {
+        finalPathNode.push(parseInt(currentNode)); // Add it to the list
+        links.forEach(function(link){
+            if(link != null && link.dNodeID == currentNode && link.uNodeID == dijkstraOutput[currentNode].predecessor){
+                finalPathLink.push(link.linkID)
+            }
+        })
+        currentNode = dijkstraOutput[currentNode].predecessor; // Move to the next node
+    }
+
+    finalPathNode.push(start); // Finally, push the start node to complete the list
+    console.log(finalPathNode.reverse());
+    console.log(finalPathLink.reverse())
+    return {
+        node: finalPathNode.reverse(),
+        link: finalPathLink.reverse()
+    };
 }
 
+function showDijkstras(){
+    $("#endTurn").prop('disabled', false);
+    if(lastTurn.lastLinkPath != null){
+        removePrevious()
+    }
+    dijkstrasPath.link.forEach(function(link){
+        leafletLinks[link].setStyle({
+            color:'green'
+        })
+        leafletLinks[link].bringToFront()
+        leafletLinks[link].openTooltip()
+    })
+    orderLinksPicked = dijkstrasPath.link
+    orderNodesPicked = dijkstrasPath.node
+}
+function removePrevious(){
+    lastTurn.lastLinkPath.forEach(function(link){
+        leafletLinks[link].setStyle({
+            color:'black'
+        })
+        leafletLinks[link].closeTooltip()
+    })
+}
+function removeDijkstras(){
+    dijkstrasPath.link.forEach(function(link){
+        //leafletLinks off by 1
+        leafletLinks[link].setStyle({
+            color:'black'
+        })
+        leafletLinks[link].closeTooltip()
+    })
+}
+function showPrevious(){
+    $("#endTurn").prop('disabled', false);
+    if(lastTurn.lastLinkPath != null) {
+        removeDijkstras()
+        lastTurn.lastLinkPath.forEach(function (link) {
+            leafletLinks[link].setStyle({
+                color: 'blue'
+            })
+            leafletLinks[link].bringToFront()
+            leafletLinks[link].openTooltip()
+        })
+
+        orderLinksPicked = lastTurn.lastLinkPath
+        orderNodesPicked = lastTurn.lastNodePath
+    }
+    else{
+        alert("There is no previous path saved")
+    }
+}
 //send choices to update choices and update congestion
 function endTurn(){
     $.ajax({
         url: "/trafficapp/StudentTurn/addTurn",
         type:'POST',
         dataType: 'json',
-        data: "value="+JSON.stringify({user: localStorage.getItem("username"), pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastNode, lastLinkPath:lastLink }),
+        data: "value="+JSON.stringify({user: localStorage.getItem("username"), gameCode:localStorage.getItem("gameCode"), network:settings.network,pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastTurn.lastNodePath, lastLinkPath:lastTurn.lastLinkPath }),
+        success:refreshPage()
     });
 }
 
 function refreshPage(){
     window.location.reload();
-}
-
-function selectRoute(icon){
-    if(orderNodesPicked.includes(icon)){
-        var cutoff = -1;
-        for(var step = 0; step < orderNodesPicked.length; step++){
-            if (orderNodesPicked[step] == icon){
-                cutoff = step;
-            }
-            else if(cutoff != -1){
-
-                leafletLinks[orderLinksPicked[step]].setStyle({
-                    color:'black'
-                });
-                if(orderNodesPicked[step] == end){
-                    leafletNodes[orderNodesPicked[step]].setIcon(redIcon);
-                }
-                else{
-                    leafletNodes[orderNodesPicked[step]].setIcon(blackIcon);
-                }
-            }
-        }
-        orderLinksPicked = orderLinksPicked.slice(0,cutoff);
-        orderNodesPicked = orderNodesPicked.slice(0,cutoff+1);
-        currentIcon = icon;
-    }
-    else{
-        for (var step = 0; step < links.length; step++){
-            if(links[step][9]-1 == currentIcon && links[step][10]-1 == icon){
-
-                leafletLinks[step].setStyle({
-                    color:'green'
-                });
-                orderLinksPicked.push(step);
-
-                leafletNodes[icon].setIcon(greenIcon);
-                orderNodesPicked.push(icon);
-                currentIcon = icon;
-                break;
-            }
-        }
-    }
 }
 
 //xa number of cars on the path

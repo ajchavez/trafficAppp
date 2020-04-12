@@ -22,7 +22,7 @@
     <div class = input><input id = "username", type="text"></div>
     <button onclick="joinGame()">JOIN GAME</button>
     <g:link controller="student" action="index">
-        <button id = "dummy"></button>
+        <button id = "dummy" ></button>
     </g:link>
 </div>
 </body>

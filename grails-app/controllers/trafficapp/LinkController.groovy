@@ -19,7 +19,8 @@ class LinkController {
         respond linkService.get(id)
     }
     def queryLinks(){
-        def link = Link.findAll()
+        def value = JSON.parse(params.value)
+        def link = Link.findAllByNetwork(value.network)
         render link as JSON
     }
     def create() {

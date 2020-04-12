@@ -20,7 +20,8 @@ class NodeController {
     }
 
     def queryNodes(){
-        def nodes = Node.findAll()
+        def value = JSON.parse(params.value)
+        def nodes = Node.findAllByNetwork(value.network)
         render nodes as JSON
     }
 

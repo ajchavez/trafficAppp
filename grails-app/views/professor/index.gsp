@@ -7,6 +7,10 @@
     <asset:javascript type="text/javascript" src="leaflet.js"/>
     <asset:javascript  type="text/javascript" src="jquery-3.3.1.min.js"/>
     <asset:stylesheet type="text/css" href="studentView.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <asset:javascript  src="jquery-3.3.1.min.js"/>
+    <asset:stylesheet type="text/css" href="professorView.css"/>
     <asset:javascript  type="text/javascript" src="professorLeaflet.js"/>
     <asset:javascript type="text/javascript" src="polylineDecorator.js"/>
     <!--<script src="https://bbecquet.github.io/Leaflet.PolylineDecorator/dist/leaflet.polylineDecorator.js"></script>-->

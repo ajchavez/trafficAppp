@@ -1,15 +1,27 @@
 function joinGame(){
     var userName = document.getElementById('username').value
-    var gameID = document.getElementById('gameID').value
-    localStorage.setItem("gameID", gameID)
+    var gameCode = document.getElementById('gameID').value
+    localStorage.setItem("gameCode", gameCode)
+
     localStorage.setItem("username", userName)
     $.ajax({
         url: "/trafficapp/StudentJoin/addStudent",
         type:'POST',
-        dataType: 'json',
-        data: "value="+JSON.stringify({user: userName}),
+        dataType: 'text',
+        data: "value="+JSON.stringify({user: userName, gameCode: gameCode}),
         success: function (data) {
-            document.getElementById("dummy").click()
+            if(data =="codeDoesntExist"){
+                alert("Your game code doesnt exist")
+            }
+            else if(data == "gameAlreadyStarted"){
+                alert("This game has already started")
+            }
+            else if(data == "nameTaken"){
+               alert("Someone already has this name")
+            }
+            else{
+                document.getElementById("dummy").click()
+            }
         }
     });
 
