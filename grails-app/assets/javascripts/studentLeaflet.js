@@ -172,7 +172,7 @@ function loadNetwork(){
         }).addTo(mymap);
     }
 
-    var shortestPath = graphlib.alg.dijkstra(graph, 1, function(e) { return graph.edge(e); });
+    var shortestPath = graphlib.alg.dijkstra(graph, lastTurn.startNode, function(e) { return graph.edge(e); });
     console.log(shortestPath);
     dijkstrasPath = getShortestPath(lastTurn.startNode, lastTurn.endNode, shortestPath);
     getCurrentTurn()
