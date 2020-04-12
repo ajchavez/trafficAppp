@@ -108,7 +108,9 @@ function getCurrentTurn(){
             if (currentTurn != null && currentTurn != data) {
                 refreshPage()
             }
-            setTimeout(getCurrentTurn(), 5000)
+            setTimeout(function(){
+                getCurrentTurn()
+            },5000)
             currentTurn = data
         }
     });

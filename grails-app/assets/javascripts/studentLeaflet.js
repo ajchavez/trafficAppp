@@ -186,6 +186,9 @@ function getCurrentTurn(){
         dataType: 'text',
         data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
         success: function (data) {
+            console.log(parseInt(data))
+            console.log(settings.numStudents)
+            console.log(lastTurn.turnOrder)
             if((parseInt(data)) % settings.numStudents == lastTurn.turnOrder){
                 if(currentTurn != null && settings.numStudents != 1){
                     refreshPage()
@@ -199,7 +202,10 @@ function getCurrentTurn(){
                 if(currentTurn != null && currentTurn != data){
                     refreshPage()
                 }
-                setTimeout(getCurrentTurn(),5000)
+
+                setTimeout(function(){
+                    getCurrentTurn()
+                },5000)
                 currentTurn = data
             }
         }

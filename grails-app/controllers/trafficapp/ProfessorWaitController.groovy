@@ -13,7 +13,7 @@ class ProfessorWaitController {
     def recordNumberStudents(){
         def value = JSON.parse(params.value)
         def settings = GameSettings.findAllByGameCode(value.gameCode).first()
-        settings.numStudents = value.numStudents
+        settings.numStudents = StudentTurn.findAllByIterationAndGameCode(0,value.gameCode).size()
         settings.save(flush:true)
         render settings.numStudents
     }
