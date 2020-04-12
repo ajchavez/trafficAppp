@@ -23,10 +23,22 @@ class StudentJoinController {
                 }
                 else {
                     def student = new StudentTurn()
+                    def numOfNodes = Node.findAllByNetwork(settings.network).size()
                     student.studentID = turn.user
                     student.gameCode = turn.gameCode
-                    student.endNode = 3
-                    student.startNode = 1
+
+                    // Get random start and end nodes inclusively between 1 and n where n == number of nodes in the network
+                    student.endNode = ((Math.random() * 100) % numOfNodes) + 1
+                    student.startNode = ((Math.random() * 100) % numOfNodes) + 1
+
+                    // Make sure that the start and end nodes are not the same
+                    while (student.startNode == student.endNode) {
+                        student.startNode = ((Math.random() * 100) % numOfNodes) + 1
+                    }
+
+                    println("Start node: " + student.startNode)
+                    println("End node: " + student.endNode)
+
                     student.lastLinkPath = null
                     student.lastNodePath = null
                     student.iteration = 0
@@ -37,4 +49,5 @@ class StudentJoinController {
             }
         }
     }
+
 }

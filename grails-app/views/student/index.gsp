@@ -8,8 +8,13 @@
     <script src="https://dagrejs.github.io/project/graphlib/latest/graphlib.js"></script>
     <asset:javascript  src="jquery-3.3.1.min.js"/>
     <asset:stylesheet type="text/css" href="studentView.css"/>
+<<<<<<< HEAD
     %{--    <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'bootstrap.css')}">--}%
     %{--    <asset:javascript src="application.js"/>--}%
+=======
+%{--    <link rel="stylesheet" type="text/css" href="${resource(dir: 'stylesheets', file: 'bootstrap.css')}">--}%
+%{--    <asset:javascript src="application.js"/>--}%
+>>>>>>> 0cd24512df61ea0002c2595a76a3cac46611fcec
     <asset:javascript  type="text/javascript" src="studentLeaflet.js"/>
     <script src="http://bbecquet.github.io/Leaflet.PolylineDecorator/dist/leaflet.polylineDecorator.js"></script>
 
@@ -20,10 +25,12 @@
 <div id="map"></div>
 
 <div id="buttonContainer">
+
     <button class="pathChoice" onclick="showPrevious()">Previous</button>
     <button class="pathChoice" onclick="showDijkstras()">Shortest</button>
     <button onclick="refreshPage()">Refresh</button>
-    <button id = "endTurn" onclick="endTurn()">
+    <button id = "endTurn" onclick="endTurn()">End Turn</button>
+
 </div>
 
 </body>
