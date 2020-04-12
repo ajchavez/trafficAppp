@@ -5,7 +5,9 @@ var leafletNodes = [null];
 var orderNodesPicked = [];
 var orderLinksPicked = [];
 var settings = null;
-var dijkstrasPath = null
+var dijkstrasPath = null;
+var lastTurn;
+
 
 // graphlib references
 // https://github.com/dagrejs/graphlib/wiki/API-Reference#graph-concepts
@@ -104,7 +106,6 @@ function getLinks(){
 
 function previousTurn(){
     //loadPreviousTurn
-
     return $.ajax({
         url: "/trafficapp/StudentTurn/getLastTurn",
         type:'POST',
