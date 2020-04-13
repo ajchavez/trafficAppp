@@ -304,7 +304,7 @@ function endTurn(){
         type:'POST',
         dataType: 'json',
         data: "value="+JSON.stringify({user: localStorage.getItem("username"), gameCode:localStorage.getItem("gameCode"), network:settings.network,pathNode: orderNodesPicked,pathLink: orderLinksPicked, lastNodePath:lastTurn.lastNodePath, lastLinkPath:lastTurn.lastLinkPath }),
-        success:refreshPage()
+        success:function (data) {refreshPage()}
     });
 }
 

@@ -24,7 +24,7 @@ class ProfessorWaitController {
         students.each {
             it.turnOrder = turn
             it.save(flush:true)
-            turn = turn += 1
+            turn = turn + 1
         }
     }
 }
