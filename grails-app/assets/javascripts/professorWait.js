@@ -29,12 +29,16 @@ function getStudents(){
 }
 
 function recordNumberOfStudents() {
+    $.when(assignTurnOrder()).done(function(a1) {
+        numStudents()
+    })
+}
+function assignTurnOrder(){
     $.ajax({
         url: "/trafficapp/professorWait/assignTurnOrder",
         dataType: 'json',
         type: 'post',
-        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
-        success:numStudents()
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")})
     });
 }
 function numStudents(){
