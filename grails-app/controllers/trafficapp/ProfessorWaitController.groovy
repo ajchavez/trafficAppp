@@ -15,7 +15,7 @@ class ProfessorWaitController {
         def settings = GameSettings.findAllByGameCode(value.gameCode).first()
         settings.numStudents = StudentTurn.findAllByIterationAndGameCode(0,value.gameCode).size()
         settings.save(flush:true)
-        render settings.numStudents
+        render settings.numStudents as String
     }
     def assignTurnOrder(){
         def value = JSON.parse(params.value)
@@ -26,5 +26,6 @@ class ProfessorWaitController {
             it.save(flush:true)
             turn = turn + 1
         }
+        render students as JSON
     }
 }

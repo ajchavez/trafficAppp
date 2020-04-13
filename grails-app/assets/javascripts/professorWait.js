@@ -29,24 +29,34 @@ function getStudents(){
 }
 
 function recordNumberOfStudents() {
-    $.when(assignTurnOrder()).done(function(a1) {
-        numStudents()
+    $.when(assignTurnOrder(),numStudents()).done(function(a1, a2) {
+        console.log(a1)
+        //numStudents()
+        document.getElementById("dummy").click()
     })
 }
 function assignTurnOrder(){
+    console.log("turnOrder")
     return $.ajax({
         url: "/trafficapp/professorWait/assignTurnOrder",
         dataType: 'json',
-        type: 'post',
-        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")})
+        type: 'POST',
+        data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode")}),
+        success:function (data) {
+            console.log("assigned")
+        }
     });
 }
 function numStudents(){
-    $.ajax({
+    console.log("numStudents")
+    return $.ajax({
         url: "/trafficapp/professorWait/recordNumberStudents",
-        dataType: 'json',
-        type: 'post',
+        dataType: 'text',
+        type: 'POST',
         data: "value="+JSON.stringify({gameCode: localStorage.getItem("gameCode"), numStudents: studentList.length}),
-        success:function (data) {document.getElementById("dummy").click()}
+        success:function (data) {
+            console.log("assigned2")
+        }
+        //success:function (data) {document.getElementById("dummy").click()}
     });
 }
