@@ -34,7 +34,7 @@ function recordNumberOfStudents() {
     })
 }
 function assignTurnOrder(){
-    $.ajax({
+    return $.ajax({
         url: "/trafficapp/professorWait/assignTurnOrder",
         dataType: 'json',
         type: 'post',
